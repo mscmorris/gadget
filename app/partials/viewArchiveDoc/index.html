@@ -1,0 +1,29 @@
+<div id="index">
+  <ig-header data-title="{{vm._currInspection.proNbr}}" showsic="false" flex-val="35">
+    <div layout="row" layout-align="start center">
+      {{ vm.displayCurrentIndex() + " of " + vm.docLength() }}
+    </div>
+    <span flex></span>
+    <hr class="tbar-vertical-divider-viewphoto">
+    <div layout="row" layout-align="start center" class="toolbar-btn">
+      <md-icon md-svg-src="images/wni_thum-cloud-1color.svg" class="ig-icon-button" aria-label="Archived"></md-icon>
+      <span>Archived</span>
+    </div>
+  </ig-header>
+
+  <md-content>
+    <div class="archive-doc-container" layout="row" flex>
+      <div ng-if="vm.showPrevArrow()" class="nav-back">
+        <md-icon md-svg-src="images/wni_back-arrow.svg" aria-label="Navback" ng-click="vm.prevSlide()"></md-icon>
+      </div>
+
+      <div layout="row" layout-align="start center" class="image-content spacetop-1" flex>
+        <img ng-src="data:image/png;base64,{{vm.currentImageBytes()}}"/>
+      </div>
+
+      <div  ng-if="vm.showNextArrow()" class="nav-fwd">
+        <md-icon md-svg-src="images/wni_forward-arrow.svg" aria-label="Navfwd" ng-click="vm.nextSlide()"></md-icon>
+      </div>
+    </div>
+  </md-content>
+</div>

@@ -1,11 +1,17 @@
 <script type="text/javascript">
   $("#iframeDisplay").on('load', function() {
     $(".iframeWrapper").removeClass("loading-2to5-gif");
+    var document = $("#iframeDisplay")[0].contentDocument;
+    if ($(document).find("body").children().length == 0){
+      $("#error_message").show();
+      $("#iframeDisplay").hide();
+    }
   });
 </script>
 <md-dialog class="iframeWrapper">
   <md-dialog-content class="iframeWrapper loading-2to5-gif">
     <iframe id="iframeDisplay" ng-src="{{vm._iframeContentSrc | trustedUrl}}"></iframe>
+    <div style="display: none;width:100%" class="text-error text-center"  id="error_message">{{vm.iFrameErrorMessage}}</div>
   </md-dialog-content>
 </md-dialog>
 

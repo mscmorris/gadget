@@ -4,8 +4,7 @@ export default ngModule =>
 
   class dialogService {
     /*@ngInject*/
-    constructor($http, $window, $log, $mdDialog) {
-      this._$http = $http;
+    constructor($window, $log, $mdDialog) {
       this._$log = $log;
       this._$window = $window;
       this._$mdDialog = $mdDialog;
@@ -26,6 +25,7 @@ export default ngModule =>
       this.assignValue(returnObj, "dialogConfirmTxt", args, "Ok");
       this.assignValue(returnObj, "dialogCancelTxt", args, "Cancel");
       this.assignValue(returnObj, "clickOutsideToClose", args, false);
+      this.assignValue(returnObj, "", args, false);
       return returnObj;
     }
 
@@ -45,6 +45,30 @@ export default ngModule =>
         clickOutsideToClose: localProviders.clickOutsideToClose,
         locals: localProviders
       }).then(callbackFn);
+    }
+
+    loading(localProviders) {
+      this._$log.debug(`${providerName}: Showing Loading dialog...`);
+      this._$mdDialog.show({
+        templateUrl: 'partials/dialogs/loading.html',
+        controller: 'dialogController as vm',
+        locals: localProviders
+      });
+    }
+
+    hide() {
+      this._$log.debug(`${providerName}: Hiding dialog...`);
+      this._$mdDialog.hide();
+    }
+
+    showCrashed() {
+      let dialogArgs = {
+        "dialogTitle":"Application Error",
+        "dialogContent":`We’ve encountered an error with your application. Press "Ok” to refresh and correct the issue.`
+      };
+      let callbackFn = () => { container.reload() };
+      let locals = this.buildDialogBindings(dialogArgs);
+      this.alert(locals, callbackFn);
     }
   }
   ngModule.service(providerName, dialogService);

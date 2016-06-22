@@ -1,84 +1,56 @@
 <div id="index">
-    <ig-header data-title="{{vm._currInspection.proNbr}} - {{vm._currInspection.inspectionStatusCd}}" flex-val="initial">
+    <ig-header data-title="{{vm._shipDtls.proNbr | friendlyProNumber }} - {{vm._currentInspection.inspectionStatusCd | friendlyStatusCd}}" flex-val="initial">
       <hr class="tbar-vertical-divider-inspect">
-      <md-menu-bar>
-        <md-menu>
-          <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="$mdOpenMenu()">
-            <md-icon md-svg-src="images/wni_control-action-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
-            <span>Action</span>
-          </div>
-          <md-menu-content>
-            <md-menu-item ng-if="vm.displayActionMenuItem('mvDismiss')">
-              <button ng-click="vm.setInspectionStatus('X', 'Shipment dismissed.')">
-                Dismiss
-              </button>
-            </md-menu-item>
-            <md-menu-item ng-if="vm.displayActionMenuItem('mvInspNtCrcted')">
-              <button ng-click="vm.setInspectionStatus('N', 'Shipment marked as Inspected Not Corrected.')">
-                Mark inspected not corrected
-              </button>
-            </md-menu-item>
-            <md-menu-item ng-if="vm.displayActionMenuItem('mvPlanList')">
-              <button ng-click="vm.setInspectionStatus('Y', 'Shipment moved to Planning List.')">
-                Move to planning list
-              </button>
-            </md-menu-item>
-            <md-menu-item ng-if="vm.displayActionMenuItem('mvInsList')">
-              <button ng-click="vm.setInspectionStatus('R', 'Shipment moved to Inspection List.')">
-                Move to inspection list
-              </button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-      </md-menu-bar>
+      <ig-action-menu sync-with="vm._currentInspection.inspectionStatusCd"></ig-action-menu>
       <hr class="tbar-vertical-divider-inspect">
-      <div layout="row" layout-align="start center" class="toolbar-btn" ui-sref="inspectionInProgress">
+      <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="vm.inspectClickHandler()">
         <md-icon md-svg-src="images/wni_control-inspect-2x.svg" class="ig-icon-button" aria-label="Inspect"></md-icon>
         <span>Inspect</span>
       </div>
     </ig-header>
     <md-content ng-cloak>
-        <ig-collapsible data-title="Overview" heading-color="#FFC107" expanded="true">
-          <div ng-show="vm._shipDtls">
-            <div layout="row" layout-align="start center" class="content-item">
+        <ig-collapsible data-title="Overview" heading-color="#FFC107" expanded="true" expanded-state-key="ShipDtls.Overview" id="ShipDtls.Overview">
+          <div ng-show="!vm.displayErrorContent()">
+            <div layout="row" layout-align="start center" class="content-item" ng-if="vm.isShowingOverviewButtons()">
               <a href="#prevInspectionAnchor">
-                <div class="action-btn spaceright-2" layout="row" layout-align="center" ng-show="vm._prevStatus=='I' || vm._prevStatus=='C'"
+                <div class="action-btn spaceright-2" layout="row" layout-align="center"
+                     ng-show="vm.displayPreviousInspection()"
                      ng-click="vm.onClickViewPrevIns('#previous-inspection')">
-                  <md-icon md-svg-src="images/wni_control-submit-2x.svg" class="ig-icon-button" aria-label="View Previous Inspections"></md-icon>
+                  <md-icon md-svg-src="images/wni_control-submit-2x.svg" class="ig-icon-button" aria-label="View Previous Inspection"></md-icon>
                   <div layout="column" layout-align="center">
-                    View Previous Inspections
+                    View Previous Inspection
                   </div>
                 </div>
               </a>
-              <div class="action-btn" layout="row" layout-align="center" ng-show="vm._prevStatus=='C'" ng-click="vm.viewPreviousCorrections($event)">
+              <div class="action-btn" layout="row" layout-align="center" ng-show="vm.displayPreviousCorrection()" ng-click="vm.viewPreviousCorrections($event)">
                 <md-icon md-svg-src="images/wni_correction-2x.svg" class="ig-icon-button" aria-label="View Previous Corrections"></md-icon>
                 <div layout="column" layout-align="center">
                   View Previous Corrections
                 </div>
               </div>
             </div>
-            <div class="spacetop-2" layout="row" layout-align="space-around start" layout-wrap flex="auto">
+            <div ng-class="{'spacetop-2': vm.isShowingOverviewButtons()}" layout="row" layout-align="start start" layout-wrap flex="auto">
               <div layout="column" class="content-item">
                 <div class="content-label">Total Pieces</div>
-                <div class="content-field">{{vm._currInspection.totPieceCnt}}</div>
+                <div class="content-field">{{vm._shipDtls.totPieceCnt}}</div>
               </div>
-              <div class="content-item">=</div>
               <div layout="column" class="content-item">
                 <div class="content-label">Motor Moves</div>
-                <div class="content-field">{{vm._currInspection.motorizedPiecesCnt}}</div>
+                <div class="content-field">{{vm._shipDtls.motorizedPiecesCnt}}</div>
               </div>
-              <div class="content-item">+</div>
               <div layout="column" class="content-item">
                 <div class="content-label">Loose Pieces</div>
-                <div class="content-field">{{vm._currInspection.loosePiecesCnt}}</div>
+                <div class="content-field">{{vm._shipDtls.loosePiecesCnt}}</div>
               </div>
               <div layout="column" class="content-item">
                 <div class="content-label">Total Weight</div>
-                <div class="content-field">{{vm._currInspection.totGrossWeight}}</div>
+                <div class="content-field">{{vm._shipDtls.totGrossWeight}}</div>
               </div>
               <div layout="column" class="content-item">
                 <div class="content-label">FAK</div>
-                <div ng-repeat="fakClass in vm._shipDtls.agreementFAKText track by $index" class="content-field">{{fakClass}}</div>
+                <div class="content-field spacetop-1" ng-if="vm._shipDtls.agreementFAKText.length >0">
+                  <div ng-bind-html="vm._shipDtls.agreementFAKText[0] | columnFak: '\\s' "></div>
+                </div>
               </div>
             </div>
             <hr>
@@ -111,10 +83,10 @@
               </div>
             </div>
           </div>
-          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._shipDtls"></div>
+          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="vm.displayErrorContent()"></div>
         </ig-collapsible>
-        <ig-collapsible data-title="Bill Details" heading-color="#003388">
-          <div layout="column" ng-show="vm._shipDtls">
+        <ig-collapsible data-title="Bill Details" heading-color="#003388"  expanded-state-key="ShipDtls.BillDtls" id="ShipDtls.BillDtls">
+          <div layout="column" ng-show="!vm.displayErrorContent()">
             <div layout="row" layout-align="start center" flex layout-wrap>
                 <div layout="column" class="content-item left">
                   <div class="content-label">Shipper</div>
@@ -150,7 +122,7 @@
                 <div class="content-label">Driver Collect</div>
                 <div class="content-field">
                   <span ng-class="{'text-urgent': vm._shipDtls.shipperIsDebtor == 'Yes'}">
-                    {{vm._shipDtls.shipperIsDebtor}}
+                    {{vm._shipDtls.shipperIsDebtor.toUpperCase()}}
                   </span>
                 </div>
               </div>
@@ -160,11 +132,11 @@
               </div>
             </div>
           </div>
-          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._shipDtls"></div>
+          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="vm.displayErrorContent()"></div>
         </ig-collapsible>
-        <ig-collapsible data-title="Pricing" heading-color="#CC0000">
-          <div ng-show="vm._shipDtls">
-            <div layout="row" layout-align="space-between center" flex layout-wrap>
+        <ig-collapsible data-title="Pricing" heading-color="#CC0000" expanded-state-key="ShipDtls.Pricing" id="ShipDtls.Pricing">
+          <div ng-show="!vm.displayErrorContent() && vm._shipDtls.adminStatusCd == vm._CODE_CONSTANTS.ADMIN_STATUS_CD.RATED">
+            <div layout="row" layout-align="space-between start" flex layout-wrap>
               <div layout="column" class="content-item">
                 <div class="content-label">Item 15 Eligibility</div>
                 <div class="content-field">{{vm._shipDtls.item15Exempt}}</div>
@@ -175,30 +147,39 @@
               </div>
               <div layout="column" class="content-item">
                 <div class="content-label">Lineal Foot Eligibility</div>
-                <div class="content-field">{{vm._shipDtls.linealExempt}}</div>
+                <div class="content-field">{{vm._shipDtls.linealFootEligibility}}</div>
               </div>
               <div layout="column" class="content-item">
-                <div class="content-label">Accessorials</div>
+                <div class="content-label">Lineal Foot Range</div>
+                <div class="content-field" ng-repeat="linealFootRange in vm._shipDtls.linealFootRange track by $index">{{linealFootRange}}</div>
+              </div>
+              <div layout="column" class="content-item">
+                <div class="content-label">Special lineal foot or capacity rules </div>
+                <div class="content-field">{{vm._shipDtls.specialCapacityRuleInd}}</div>
+              </div>
+              <div layout="column" class="content-item">
+                <div class="content-label">Accessorials Applied</div>
                 <div ng-repeat="item in vm._shipDtls.accessorialChargeCd" class="content-field">
                   {{item}}
                 </div>
               </div>
               <div layout="column" class="content-item">
-                <div class="content-label">Total Charges</div>
+                <div class="content-label">Current Total Charges</div>
                 <div class="content-field">{{vm._shipDtls.totChargeAmt | currency : '$'}}</div>
               </div>
             </div>
-            <div class="action-btn" layout="row" layout-align="center" ng-click="vm.viewAppliedRuleset($event)">
+            <div class="action-btn" layout="row" layout-align="center" ng-click="vm.viewAppliedRuleset($event)" ng-show="vm._shipDtls.appliedAgreementID != '' && vm._shipDtls.appliedRulesetNbr != ''">
               <md-icon md-svg-src="images/wni_control-external-2x.svg" class="ig-icon-button" aria-label="View Applied Rulesets"></md-icon>
               <div layout="column" layout-align="center">
                 View Applied Rulesets
               </div>
             </div>
           </div>
-          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._shipDtls"></div>
+          <div ng-include="'partials/placeholders/unbilledPro.html'" ng-show="!vm.displayErrorContent() && vm._shipDtls.adminStatusCd!= vm._CODE_CONSTANTS.ADMIN_STATUS_CD.RATED"></div>
+          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="vm.displayErrorContent()"></div>
         </ig-collapsible>
-        <ig-collapsible data-title="Location & Movement" heading-color="#9C27B0" on-expand="vm.getShipmentLocationDetails()" flex>
-          <div layout="row" flex layout-wrap ng-show="vm._shipLocDtls">
+        <ig-collapsible data-title="Location & Movement" heading-color="#9C27B0" on-expand="vm.getShipmentLocationDetails()" expanded-state-key="ShipDtls.Location" id="ShipDtls.Location" flex>
+          <div layout="row" flex layout-wrap ng-show="!vm.displayErrorContent('location')">
               <div layout="column" class="content-item" flex-gt-lg>
                   <div class="content-label">Origin SIC</div>
                   <div class="content-field">{{vm._shipLocDtls.originSIC}}</div>
@@ -208,98 +189,97 @@
                   <div class="content-field">{{vm._shipLocDtls.destSIC}}</div>
               </div>
               <div layout="column" class="content-item" flex-gt-lg>
-                  <div class="content-label">Load Destination SIC</div>
-                  <div class="content-field">{{vm._shipLocDtls.loadDestSIC}}</div>
-              </div>
-              <div layout="column" class="content-item" flex-gt-lg>
                   <div class="content-label">Location</div>
                   <div class="content-field">{{vm._shipLocDtls.dockLocation}}</div>
               </div>
           </div>
-          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._shipLocDtls"></div>
+          <spinner name="locationAndMovementLoading" show="locationAndMovementLoading" img-src="images/2-5_second_load.gif"/>
+          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="vm.displayErrorContent('location')"></div>
         </ig-collapsible>
-        <ig-collapsible data-title="Archived Documents" heading-color="#2095F2">
-            <div layout="row" layout-wrap>
-                <ig-gallery-image ng-repeat="photo in gallery_images"
-                  fname="photo.filename" is-archived="photo.opCode">
-                  <md-icon md-svg-src="images/wni_thumb-loading-3x.svg" class="image-content"></md-icon>
+        <ig-collapsible data-title="Archived Documents" heading-color="#2095F2" on-expand="vm.getArchivedDocuments()" expanded-state-key="ShipDtls.Archived" id="ShipDtls.Archived">
+
+            <div layout="row" ng-show="documents.length > 0" layout-wrap>
+                <ig-gallery-image ng-repeat="doc in documents" ng-click="vm.viewArchiveDoc(doc)" fname="doc[0].docClass">
                 </ig-gallery-image>
             </div>
+            <div ng-show="documents.length === 0 && !documentsLoading && documentsErrorMessage.length == 0" class="content-item">No Archived Documents Found</div>
+            <div ng-show="documentsErrorMessage.length > 0" class="content-item">{{documentsErrorMessage}}</div>
+            <spinner name="documentsLoading" show="documentsLoading" img-src="images/2-5_second_load.gif"/>
         </ig-collapsible>
-      <ig-collapsible id="previous-inspection" data-title="Previous Inspection" heading-color="#858585">
-        <a name="prevInspectionAnchor"/>
-        <div layout="column" flex="100" ng-show="vm._shipDtls || vm._prevInspectionDetails">
-          <div id="container-header" style="margin-bottom:2rem;" class="content-field" flex="100">{{vm._prevInspectionDetails.inspectionDateTime | date:'MM/dd/yy @ HH:mm'}} {{vm._prevInspectionDetails.inspectionContext.inspectionSIC | uppercase}} by {{vm._prevInspectionDetails.inspectionContext.inspectorLastName | uppercase}}, {{vm._prevInspectionDetails.inspectionContext.inspectorFirstName | uppercase}}</div>
-          <div flex="100"></div>
-          <div class="dimension-details" flex="100" layout="row">
-            <div id="container-pieces-notes"  flex="55" layout="column">
-              <div class="container-pieces" flex="initial" ng-repeat="mitem in vm._prevInspectionDetails.inspectorPieceDimensions">
-                <div layout="row" flex="100">
-                  <div class="content-label" flex="10">{{mitem.seq}}.</div>
-                  <div layout="column" flex="initial" class="content-item">
-                    <div class="content-label">Pieces</div>
-                    <div class="content-field">{{mitem.pieceCnt}}</div>
-                  </div>
-                  <div class="content-divider" flex="grow">@</div>
-                  <div layout="column" flex="initial" class="content-item">
-                    <div class="content-label">Length</div>
-                    <div class="content-field">{{mitem.inspectorDimensions.length}}</div>
-                  </div>
-                  <div class="content-divider" flex="grow">X</div>
-                  <div layout="column" flex="initial" class="content-item">
-                    <div class="content-label">Width</div>
-                    <div class="content-field">{{mitem.inspectorDimensions.width}}</div>
-                  </div>
-                  <div class="content-divider" flex="grow">X</div>
-                  <div layout="column" flex="initial" class="content-item">
-                    <div class="content-label">Height</div>
-                    <div class="content-field">{{mitem.inspectorDimensions.height}}</div>
+      <div ng-show="vm.displayPreviousInspection()">
+        <ig-collapsible id="previous-inspection" data-title="Previous Inspection" heading-color="#858585" on-expand="vm.getPrevInspectionDetails()" expanded-state-key="ShipDtls.Prev">
+          <a name="prevInspectionAnchor"></a>
+          <div layout="column" flex="100" ng-show="!vm.displayErrorContent('prevInspection')" class="content-item">
+            <div id="container-header" style="margin-bottom:2rem;" class="content-field" flex="100">{{vm._prevInspectionDetails.inspectionDateTime | date:'MM/dd/yy @ HH:mm'}} {{vm._prevInspectionDetails.inspectionContext.inspectionSIC | uppercase}} by {{vm._prevInspectionDetails.inspectionContext.inspectorLastName | uppercase}}, {{vm._prevInspectionDetails.inspectionContext.inspectorFirstName | uppercase}}</div>
+            <div flex="100"></div>
+            <div class="dimension-details" flex="100" layout="row">
+              <div id="container-pieces-notes"  flex="55" layout="column">
+                <div class="container-pieces" flex="initial" ng-repeat="mitem in vm._prevInspectionDetails.inspectorPieceDimensions">
+                  <div layout="row" flex="100">
+                    <div class="content-label" flex="10">{{mitem.seq}}.</div>
+                    <div layout="column" flex="initial" class="content-item">
+                      <div class="content-label">Pieces</div>
+                      <div class="content-field">{{mitem.pieceCnt}}</div>
+                    </div>
+                    <div class="content-divider" flex="grow">@</div>
+                    <div layout="column" flex="initial" class="content-item">
+                      <div class="content-label">Length</div>
+                      <div class="content-field">{{mitem.inspectorDimensions.length}}</div>
+                    </div>
+                    <div class="content-divider" flex="grow">X</div>
+                    <div layout="column" flex="initial" class="content-item">
+                      <div class="content-label">Width</div>
+                      <div class="content-field">{{mitem.inspectorDimensions.width}}</div>
+                    </div>
+                    <div class="content-divider" flex="grow">X</div>
+                    <div layout="column" flex="initial" class="content-item">
+                      <div class="content-label">Height</div>
+                      <div class="content-field">{{mitem.inspectorDimensions.height}}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div flex="25">&nbsp;</div>
-              <div id="container-notes" flex="grow" layout="column" class="content-item">
-                <div class="content-label" flex="initial">Notes</div>
-                <div class="content-field" flex="grow">{{vm._prevInspectionDetails.inspectionNotes.note}}</div>
-              </div>
-            </div>
-            <div flex="5">&nbsp;</div>
-            <div style="border-left: 1px solid black;" flex="5"></div>
-            <div id="container-other-details" flex="35" layout="column">
-              <div id="container-weight"  flex="25" layout="column" class="content-item">
-                <div class="content-label" flex="initial">Total Weight</div>
-                <div class="content-field" flex="grow">{{vm._shipDtls.totGrossWeight}}</div>
-              </div>
-              <div id="container-feet"    flex="25" layout="column" class="content-item">
-                <div class="content-label" flex="initial">Cubic Feet</div>
-                <div class="content-field" flex="grow">{{vm._prevInspectionDetails.totGrossVolume}} <span class="content-label">&nbsp;ft<sup>3</sup></span></div>
-              </div>
-              <div id="container-density" flex="25" layout="column" class="content-item">
-                <div class="content-label" flex="initial">Density (PCF)</div>
-                <div class="content-field" flex="grow">{{vm._prevInspectionDetails.totDensity}} <span class="content-label">&nbsp;lbs/ft<sup>3</sup></span></div>
-              </div>
-              <div flex="15">&nbsp;</div>
-              <div id="container-counts" layout="row">
-                <div layout="column" class="content-item" flex>
-                  <div class="content-label">Total Pieces</div>
-                  <div class="content-field">{{vm._shipDtls.totPieceCnt}}</div>
+                <div flex="25">&nbsp;</div>
+                <div id="container-notes" flex="grow" layout="column" class="content-item">
+                  <div class="content-label" flex="initial">Notes</div>
+                  <div class="content-field preserve-newlines" flex="grow">{{vm._prevInspectionDetails.inspectionNotes.note}}</div>
                 </div>
-                <div class="content-divider" flex="grow">=</div>
-                <div layout="column" class="content-item" flex>
-                  <div class="content-label">Motor Moves</div>
-                  <div class="content-field">{{vm._shipDtls.motorizedPiecesCnt}}</div>
+              </div>
+              <div flex="5">&nbsp;</div>
+              <div style="border-left: 1px solid black;" flex="5"></div>
+              <div id="container-other-details" flex="35" layout="column">
+                <div id="container-weight"  flex="25" layout="column" class="content-item">
+                  <div class="content-label" flex="initial">Total Weight</div>
+                  <div class="content-field" flex="grow">{{vm._shipDtls.totGrossWeight}}</div>
                 </div>
-                <div class="content-divider" flex="grow">+</div>
-                <div layout="column" class="content-item" flex>
-                  <div class="content-label">Loose Pieces</div>
-                  <div class="content-field">{{vm._shipDtls.loosePiecesCnt}}</div>
+                <div id="container-feet"    flex="25" layout="column" class="content-item">
+                  <div class="content-label" flex="initial">Cubic Feet</div>
+                  <div class="content-field" flex="grow">{{vm._prevInspectionDetails.totGrossVolume}}</div>
+                </div>
+                <div id="container-density" flex="25" layout="column" class="content-item">
+                  <div class="content-label" flex="initial">Density (PCF)</div>
+                  <div class="content-field" flex="grow">{{vm._prevInspectionDetails.totDensity}}</div>
+                </div>
+                <div flex="15">&nbsp;</div>
+                <div id="container-counts" layout="row">
+                  <div layout="column" class="content-item" flex>
+                    <div class="content-label">Total Pieces</div>
+                    <div class="content-field">{{vm._shipDtls.totPieceCnt}}</div>
+                  </div>
+                  <div layout="column" class="content-item" flex>
+                    <div class="content-label">Motor Moves</div>
+                    <div class="content-field">{{vm._shipDtls.motorizedPiecesCnt}}</div>
+                  </div>
+                  <div layout="column" class="content-item" flex>
+                    <div class="content-label">Loose Pieces</div>
+                    <div class="content-field">{{vm._shipDtls.loosePiecesCnt}}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._shipDtls && !vm._prevInspectionDetails"></div>
-      </ig-collapsible>
+          <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="vm.displayErrorContent('prevInspection')"></div>
+        </ig-collapsible>
+      </div>
     </md-content>
 </div>
 <!--shipment details page, 4.x-->

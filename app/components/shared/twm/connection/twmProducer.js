@@ -1,18 +1,22 @@
-"use strict"
+import Rx from 'rx'
 
 var noop = () => {}
+var log = (m) => { console.log(m) };
 
-export function sendMessage(producer, message, fn = noop) {
+export function sendMessage(producer, message, fn = noop, logger = log) {
   return producer
-  .combineLatest(message, (p, m) => { return p.send(m, fn) })
-  .map(vf => {
+  .combineLatest(message, (p, m) => {
+    return p.send(m, fn)
+  })
+  .map((vf) => {
     return (vf.exception) ? vf.exception : true
+  })
+  .catch((e) => {
+    logger(`Error occurred sending TWM message: ${e.toString()}`);
+    return Rx.Observable.throw(e);
   })
 }
 
-export function countProduced(message) {
-  return message.scan(a => a + 1, 0)
-}
 
 export default function(session, what) {
   return session.combineLatest(what, (s, w) => s.createProducer(w))

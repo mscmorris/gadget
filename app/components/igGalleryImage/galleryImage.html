@@ -1,14 +1,14 @@
 <div class="gallery-img">
-      <div class="frame-box">
-          <div class="image-content">
-            <img ng-src="data:image/png;base64,{{fsrc}}" class="image-content"/>
-          </div>
-
-      <div ng-class="{'storage-source-dms': opCode=='C','storage-source-local': opCode=='P'}">
-        <md-icon md-svg-src="images/wni_thum-clock-1x.svg" class="storage-img" ng-show="opCode=='P'"></md-icon>
+  <div class="frame-box">
+    <div class="image-content">
+      <md-icon md-svg-src="{{ImageUrl(fname)}}" class=archived-docs ng-if="!IsLocalPhoto(fname)" alt="{{fname}}"></md-icon>
+      <img ng-src="data:image/png;base64,{{fsrc}}" class="image-content" ng-if="IsLocalPhoto(fname)" ng-click="ImageClickHandler(id)"/>
+      <div ng-class="{'storage-source-dms': opCode=='C','storage-source-local': opCode=='P' || opCode=='S'}">
+        <md-icon md-svg-src="images/wni_thum-clock-1x.svg" class="storage-img" ng-show="opCode=='P' || opCode=='S'"></md-icon>
         <md-icon md-svg-src="images/wni_thum-cloud-1x.svg" class="storage-img" ng-show="opCode=='C'"></md-icon>
       </div>
-      </div>
+    </div>
+  </div>
   <div class="gallery-img-footer" ng-if="opCode=='N'"  ng-click="DeletePhoto(id)">
     <md-icon md-svg-src="images/wni_control-trash-2x.svg" class="gallery-img-delete"></md-icon>Delete
   </div>

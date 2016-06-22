@@ -1,0 +1,53 @@
+[{
+  "data": "proNbr",
+  "title": "PRO",
+  "description": ""
+}, {
+  "data": "sourceOfRecommendation",
+  "title": "Rpt",
+  "description": ""
+}, {
+  "data": "inspectionStatusCd",
+  "title": "Status",
+  "description": ""
+}, {
+  "data": "location",
+  "title": "Location",
+  "description": ""
+}, {
+  "data": "eta",
+  "title": "ETA",
+  "description": ""
+}, {
+  "data": "breakDoor",
+  "title": "Br Dr",
+  "description": "Break Door"
+}, {
+  "data": "shipperName",
+  "title": "Shipper",
+  "description": ""
+}, {
+  "data": "consigneeName",
+  "title": "Consignee",
+  "description": ""
+}, {
+  "data": "loadDoor",
+  "title": "Ld Dr",
+  "description": "Load Door"
+}, {
+  "data": "totPieceCnt",
+  "title": "Pcs",
+  "description": ""
+}, {
+  "data": "totGrossWeight",
+  "title": "Wgt",
+  "description": ""
+}, {
+  "data": "originSIC",
+  "title": "Orig. SIC",
+  "description": ""
+}, {
+  "data": "destSIC",
+  "title": "Dest. SIC",
+  "description": ""
+}]

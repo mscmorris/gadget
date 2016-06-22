@@ -1,13 +1,7 @@
 export default ngModule => {
     ngModule.directive('manifestItem', () => {
 
-      /* @ngInject */
-      function controllerFn($scope) {
 
-        $scope.onExpand = function() {
-          $scope.expanded = !$scope.expanded;
-        }
-      };
       return {
             restrict: 'E',
             scope: {
@@ -15,7 +9,9 @@ export default ngModule => {
               expanded: '@'
             },
             templateUrl: 'components/manifestItem/manifestItem.html',
-            controller: controllerFn,
+            controller: 'manifestItemController',
+            controllerAs: 'vm',
+            bindToController:true,
             compile: function(element, attrs){
                if (!attrs.expanded) { attrs.expanded = false; }
             }

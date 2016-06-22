@@ -1,66 +1,108 @@
 {
-  "development": {
-    "LOG_ON_RESPONSE": "/services/logonresponse.json",
-    "INSPECTIONS_END_POINT": "http://tctsc.con-way.com/services/inspection",
-    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
-    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
-    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
-    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
-    "TWM_END_POINT": "wss://twmctsc.con-way.com:15443/jms",
+  "ENDPOINTS": {
+    "INSPECTIONS_ENDPOINT": "services/shipmentinspection/v1",
+    "USER_LOGIN_ENDPOINT": "services/freightmovement/scosetup/user",
+    "PRICING_APP_ENDPOINT": "webapp/pricing_app",
+    "CORRECTIONS_APP_ENDPOINT": "webapp/corrections_app",
+    "INSPECTIONS_APP_ENDPOINT": "webapp/inspection_app",
+    "GET_DOCS_ENDPOINT": "http://dms.con-way.com:8080/DMS/services/GetDmsDoc.GetDmsDocHttpSoap11Endpoint/",
+    "GET_DOCS_WSDL_ENDPOINT": "http://dms.con-way.com:8080/DMS/services/GetDmsDoc?wsdl",
+    "LIST_DOCS_ENDPOINT": "http://dms.con-way.com:8080/DMS/services/OneCorpLocateDmsDoc.OneCorpLocateDmsDocHttpSoap11Endpoint/",
+    "LIST_DOCS_WSDL_ENDPOINT": "http://dms.con-way.com:8080/DMS/services/OneCorpLocateDmsDoc?wsdl",
+    "SERVICE_REDIRECT": "",
     "TWM_CONFIG": {
-      "twmCicsRegion": "CONWAY.CTS.CTSC.S2C",
       "twmDestination": "InspectorDeviceEvents",
       "twmResponseQueue": "InspectorDeviceResponseEvents"
+    },
+    "REGIONS": {
+      "TCTSC": {
+        "TWM_ENDPOINT": "wss://twmctsc.con-way.com:15443/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTSC.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      },
+      "TCTSR": {
+        "TWM_ENDPOINT": "wss://twmctsc.con-way.com:15443/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTSR.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      },
+      "TCTS4": {
+        "TWM_ENDPOINT": "wss://twmcts4.con-way.com:15404/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTS4.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      },
+      "TCTSP": {
+        "TWM_ENDPOINT": "wss://twmctsp.con-way.com:15456/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTSP.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      },
+      "TCTSS": {
+        "TWM_ENDPOINT": "wss://twmctss.con-way.com:17459/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTSS.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      },
+      "TCTS6": {
+        "TWM_ENDPOINT": "wss://twmcts6.con-way.com:15406/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTS6.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      },
+      "WAVE": {
+        "TWM_ENDPOINT": "wss://twmprod.con-way.com:48733/jms",
+        "QUEUE_NAME": "CONWAY.CTS.PROD.S2C",
+        "DMS_CORP_CODE": "CTS"
+      },
+      "DEFAULT": {
+        "TWM_ENDPOINT": "wss://twmctsc.con-way.com:15443/jms",
+        "QUEUE_NAME": "CONWAY.CTS.CTSC.S2C",
+        "DMS_CORP_CODE": "DEMO"
+      }
     }
   },
-  "tctsc": {
-    "LOG_ON_RESPONSE": "/services/logonresponse.json",
-    "INSPECTIONS_END_POINT": "http://tctsc.con-way.com/services/inspection",
-    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
-    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
-    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
-    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
-    "TWM_END_POINT": "wss://twmctsc.con-way.com:15443/jms"
+  "CODE_CONSTANTS": {
+    "INSPECT_STATUS": {
+      "R": "Flagged",
+      "P": "In Progress",
+      "I": "Inspected",
+      "X": "Dismissed",
+      "N": "Inspected Not Corrected",
+      "Y": "Recommended",
+      "T": "Corrected",
+      "E": "Excluded",
+      "NONE": "No Status"
+    },
+    "SHIFT_CODE": {
+      "O": "Outbound",
+      "I": "Inbound",
+      "N": "FAC",
+      "D": "Day Reship"
+    },
+    "PREFERENCES": {
+      "LIST_I": "I-dtColumnsPref"
+    },
+    "MAX_INSPECT_DIMS": 50,
+    "DOCUMENT_DISPLAY": {
+      "BILL_OF_LADING": "BL",
+      "BL_ATTATCHMENT": "BLAT",
+      "CUSTOMS_DOC": "CUST",
+      "NMFC_CLASS_INSP_CERT": "NCIC",
+      "WT_INSP_CERT": "WI",
+      "WT_INSP_PHOTO": "WRFO"
+    },
+    "DOCUMENT_CODES": ["BL","BLAT","CUST","NCIC", "WI"],
+    "ARCHIVED_DOCUMENTS_PERSISTENCE_NAME": "ARCHIVED_DOCS",
+    "FEEDBACK_CATEGORIES": ["Inspection App","Device","Training","New Feature","Other"],
+    "NO_NETWORK_CONN": -1,
+    "SERVER_ERROR_HTML": "Server Error 500",
+    "ADMIN_STATUS_CD" :{
+      "RATED":"4"
+    }
   },
-  "tctsr": {
-    "LOG_ON_RESPONSE": "/services/logonresponse.json",
-    "INSPECTIONS_END_POINT": "http://tctsr.con-way.com/services/inspection",
-    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
-    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
-    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
-    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
-    "TWM_END_POINT": "ws://twmctsr.con-way.com:15043/jms"
-  },
-  "production": {
-    "LOG_ON_RESPONSE": "/services/logonresponse.json",
-    "INSPECTIONS_END_POINT": "/components/inspect/shipments.json",
-    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
-    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
-    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
-    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
-    "TWM_END_POINT": "wss://twmctsc.con-way.com:15443/jms"
-  },
-  "env_independent": {
-    "CODE_CONSTANTS": {
-      "INSPECT_STATUS": {
-        "R": "Flagged for Inspection",
-        "P": "In Progress",
-        "I": "Inspected",
-        "X": "Dismissed",
-        "N": "Inspected Not Corrected",
-        "Y": "Recommended",
-        "NONE": "No Status"
-      },
-      "SHIFT_CODE": {
-        "O": "Outbound",
-        "I": "Inbound",
-        "F": "FAC",
-        "D": "Day Reship"
-      },
-      "PREFERENCES": {
-        "LIST_I": "I-dtColumnsPref"
-      },
-      "MAX_INSPECT_DIMS": 50
+  "SERVER_ERROR": {
+    "HTML_CONTENTS": "Server Error 500",
+    "HEADER": "hasError",
+    "FRIENDLY_ERROR_CODES": {
+      "XXXXX": {
+        "errorMessage": "Shipment not found."
+      }
     }
   }
 }

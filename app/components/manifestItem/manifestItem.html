@@ -1,70 +1,78 @@
 <div layout="column" layout-wrap>
   <div layout="row" layout-wrap flex>
     <div layout="column" class="manifestItem-content-item" flex="20">
-      <div class="content-label">PRO</div>
-      <div class="content-field"><span class="required-field">{{manifestitem.proNbr}}</span></div>
+      <div ng-if="vm.displayPro(vm.manifestitem.proNbr)">
+        <div class="content-label">PRO</div>
+        <div class="content-field cursor" ui-sref="shipmentDetails({proNbr:vm.manifestitem.proNbr})"><span class="required-field">{{vm.manifestitem.proNbr}}</span></div>
+      </div>
+      <div ng-if="!vm.displayPro(vm.manifestitem.proNbr)">
+        <div class="content-label">CALL</div>
+        <div class="content-field "><span class="required-field">{{vm.manifestitem.proNbr}}</span></div>
+      </div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex="10">
       <div class="content-label">Seq</div>
-      <div class="content-field">{{manifestitem.seq}}</div>
+      <div class="content-field">{{vm.manifestitem.seq}}</div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex="15">
       <div class="content-label">Motor Moves</div>
-      <div class="content-field">{{manifestitem.motorizedPiecesCnt}}</div>
+      <div class="content-field">{{vm.manifestitem.motorizedPiecesCount}}</div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex="15">
       <div class="content-label">Billed Pieces</div>
-      <div class="content-field">{{manifestitem.billPiecesCnt}}</div>
+      <div class="content-field">{{vm.manifestitem.totPiecesCount}}</div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex="10">
       <div class="content-label">Cube</div>
-      <div class="content-field">{{manifestitem.totGrossVolume}}</div>
+      <div class="content-field">{{vm.manifestitem.totGrossVolume}}</div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex="10">
       <div class="content-label">Weight</div>
-      <div class="content-field">{{manifestitem.totGrossWeight}}</div>
+      <div class="content-field">{{vm.manifestitem.totWeight}}</div>
     </div>
-    <div class="manifestItem-content-item" ng-click="onExpand()">
-      <md-icon md-svg-src="images/wni_expand-arrow-1x.svg" ng-show="!expanded"></md-icon>
-      <md-icon md-svg-src="images/wni_collapse-arrow-1x.svg" ng-show="expanded"></md-icon>
+    <div class="manifestItem-content-item" ng-click="vm.onExpand()">
+      <md-icon md-svg-src="images/wni_expand-arrow-1x.svg" ng-show="!vm.expanded"></md-icon>
+      <md-icon md-svg-src="images/wni_collapse-arrow-1x.svg" ng-show="vm.expanded"></md-icon>
     </div>
   </div>
-  <div layout="row" layout-wrap class="space-top-minus-1" flex>
+  <div layout="row" layout-wrap class="spacetop-minus-1" flex>
     <div layout="column" class="manifestItem-content-item" flex="20">
-      <div class="content-label" ng-show="expanded">Indicator</div>
-      <div class="content-field"ng-show="expanded">-</div>
+      <div class="content-label" ng-show="vm.expanded">Indicator</div>
+      <div class="content-field indicator-icon"ng-show="vm.expanded">
+        <md-icon md-svg-src="images/wni_hazmat.svg" ng-if="vm.manifestitem.hazmatInd"></md-icon>
+        <md-icon md-svg-src="images/wni_freezable.svg" ng-if="vm.manifestitem.freezableInd"></md-icon>
+        <md-icon md-svg-src="images/wni_food.svg" ng-if="vm.manifestitem.poisonInd"></md-icon>
+        <md-icon md-svg-src="images/wni_guaranteed.svg" ng-if="vm.manifestitem.garntdInd"></md-icon>
+        <md-icon md-svg-src="images/wni_headload.svg" ng-if="vm.manifestitem.headloadInd"></md-icon>
+        <md-icon md-svg-src="images/wni_accuracy_checker.svg" ng-if="vm.manifestitem.rateSaverInd"></md-icon>
+      </div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex="10">
-      <div class="content-label" ng-show="expanded">DestSIC</div>
-      <div class="content-field"ng-show="expanded">{{manifestitem.destSIC}}</div>
-    </div>
-    <div layout="column" class="manifestItem-content-item" flex="15">
-      <div class="content-label"ng-show="expanded">Load Door</div>
-      <div class="content-field"ng-show="expanded">{{manifestitem.loadDoor}}</div>
+      <div class="content-label" ng-show="vm.expanded">DestSIC</div>
+      <div class="content-field"ng-show="vm.expanded">{{vm.manifestitem.destSIC}}</div>
     </div>
     <div layout="column" class="manifestItem-content-item" flex>
-      <div class="content-label" ng-show="expanded">Shipper Name</div>
-      <div class="content-field"ng-show="expanded">{{manifestitem.shipperName}}</div>
+      <div class="content-label" ng-show="vm.expanded">Shipper Name</div>
+      <div class="content-field"ng-show="vm.expanded">{{vm.manifestitem.shipperName}}</div>
     </div>
   </div>
-  <div layout="row" ng-show="expanded" layout-wrap class="space-top-minus-1 space-bottom-2" flex>
+  <div layout="row" ng-show="vm.expanded" layout-wrap class="spacetop-1 spacebottom-2" flex>
     <div layout="column" class="manifestItem-content-item" flex>
       <div class="content-label">Status</div>
-      <div class="content-field">Inspected not Corrected</div>
+      <div class="content-field">{{vm.manifestitem.inspectionStatusCd | friendlyStatusCd}}</div>
     </div>
-    <div class="action-btn spaceright-2" layout="row" layout-align="center">
-      <md-icon md-svg-src="images/wni_correction-2x.svg" class="ig-icon-button" aria-label="Add to Inspection List"></md-icon>
+    <div class="action-btn spaceright-2" ng-show="vm.displayActionMenuItem('mvInsList')" ng-click="vm.setInspectionStatus('R')" layout="row" layout-align="center">
+      <md-icon md-svg-src="images/wni_correction-2x.svg" class="ig-icon-button" aria-label="Move to Inspection List"></md-icon>
       <div layout="column" layout-align="center">
-        Add to Inspection List
+        Move to Inspection List
       </div>
     </div>
-    <div class="action-btn" layout="row" layout-align="center">
-      <md-icon md-svg-src="images/wni_planninglist-2x.svg" class="ig-icon-button" aria-label="Add to Planning List"></md-icon>
+    <div class="action-btn" layout="row" ng-show="vm.displayActionMenuItem('mvPlanList')" ng-click="vm.setInspectionStatus('Y')" layout-align="center">
+      <md-icon md-svg-src="images/wni_planninglist-2x.svg" class="ig-icon-button" aria-label="Move to Planning List"></md-icon>
       <div layout="column" layout-align="center">
-        Add to Planning List
+        Move to Planning List
       </div>
     </div>
   </div>
-
 </div>
 

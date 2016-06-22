@@ -1,4 +1,4 @@
-"use strict"
+import Rx from 'rx'
 
 function noop() {}
 
@@ -26,7 +26,7 @@ function setUuid(strategy) {
   return function(message) {
     var uuid = strategy()
     message.setJMSCorrelationID(uuid)
-    message.setStringProperty("EventId", uuid)
+    message.setStringProperty('EventId', uuid)
     return message
   }
 }
@@ -42,16 +42,23 @@ function setStringProperties(properties) {
 
 export function messageControl(message, ready, howMany) {
   var controlled = message.controlled()
-  ready.subscribe(() => { controlled.request(howMany) })
+  ready.subscribe(() => {
+    console.log("messageControl requesting message");
+    controlled.request(howMany)
+  })
   return controlled
 }
 
-export default function(payload, session, hash, destination, replyTo, uuidStrategy = noop, mapFn = noop) {
+export default function(payload, session, propFn, destination, replyTo, uuidStrategy = noop, mapFn = noop) {
+  var msgProperties = payload.map(propFn);
   return payload
-    .map(mapFn)
+    .flatMap(mapFn)
     .map(createPayload(session))
     .map(setDestination(destination))
     .map(setReplyTo(replyTo))
     .map(setUuid(uuidStrategy))
-    .map(setStringProperties(hash))
+    .zip(msgProperties, (msg, props) => {
+      setStringProperties(props).call(null, msg);
+      return msg;
+    })
 }

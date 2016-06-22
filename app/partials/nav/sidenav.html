@@ -1,0 +1,104 @@
+<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2 nav-drawer nav-text" md-component-id="nav" md-is-open="true" >
+  <md-list>
+    <md-list-item layout="column" layout-align="start center" class="nav-input-contain">
+        <span class="nav-input-error" ng-show="nav.invalidInput == true">Invalid PRO</span>
+        <div layout="row" layout-align="start center" class="nav-input-contain">
+          <input virtual-keyboard-control="onclick&onblur" type='text' ng-class="{'nav-input-error' :nav.invalidInput }" placeholder="Scan or Enter a PRO" ng-model="scannerInput.text" md-sidenav-focus>
+        </div>
+    </md-list-item>
+    <md-divider class="nav-drawer-divider"></md-divider>
+    <a ng-click="nav.listPlanningShipments()">
+      <md-list-item md-no-ink ui-sref-active="active-state" ng-click="nav.close()">
+        <div md-ink-ripple layout="row" layout-align="start center">
+          <md-button class="ig-icon-button md-icon">
+            <md-icon md-svg-src="images/wni_planninglist-2x.svg" aria-label="Planning List"></md-icon>
+          </md-button>
+          <div>Planning</div>
+        </div>
+      </md-list-item>
+    </a>
+    <a ui-sref="list">
+      <md-list-item md-no-ink ui-sref-active="active-state" ng-click="nav.close()">
+      <div  md-ink-ripple layout="row" layout-align="start center">
+          <md-button class="ig-icon-button md-icon">
+            <md-icon md-svg-src="images/wni_control-submit-2x.svg" aria-label="Inspection List"></md-icon>
+          </md-button>
+          <div>Inspection</div>
+        </div>
+      </md-list-item>
+    </a>
+    <a ng-click="nav.listInspectionCorrections()">
+      <md-list-item md-no-ink ui-sref-active="active-state" ng-click="nav.close()">
+          <div md-ink-ripple layout="row" layout-align="start center">
+            <md-button class="ig-icon-button md-icon">
+              <md-icon md-svg-src="images/wni_correction-2x.svg" aria-label="Correction"></md-icon>
+            </md-button>
+            <div>Correction</div>
+          </div>
+      </md-list-item>
+    </a>
+    <md-divider class="nav-drawer-divider"></md-divider>
+    <a ui-sref="lookup">
+      <md-list-item ui-sref-active="active-state" ng-click="nav.close()">
+          <div md-ink-ripple layout="row" layout-align="start center">
+            <md-button class="ig-icon-button md-icon">
+              <md-icon md-svg-src="images/wni_drawer-search-2x.svg" aria-label="Lookup"></md-icon>
+            </md-button>
+            <div layout="row">Lookup</div>
+          </div>
+      </md-list-item>
+    </a>
+    <a ui-sref="addPro">
+      <md-list-item ui-sref-active="active-state" ng-click="nav.close()">
+        <div md-ink-ripple layout="row" layout-align="start center">
+          <md-button class="ig-icon-button md-icon">
+            <md-icon md-svg-src="images/wni_drawer-addmulti-2x.svg" aria-label="Add PROs"></md-icon>
+          </md-button>
+          <div>Add PROs</div>
+        </div>
+      </md-list-item>
+    </a>
+    <md-divider class="nav-drawer-divider"></md-divider>
+    <a ui-sref="tableSettings">
+      <md-list-item ui-sref-active="active-state" ng-click="nav.close()">
+          <div md-ink-ripple layout="row" layout-align="start center">
+            <md-button class="ig-icon-button md-icon">
+              <md-icon md-svg-src="images/wni_control-tablecontrol-2x.svg" aria-label="Column Settings"></md-icon>
+            </md-button>
+            <div>Column Settings</div>
+          </div>
+      </md-list-item>
+    </a>
+    <md-divider class="nav-drawer-divider"></md-divider>
+    <a ui-sref="feedback">
+      <md-list-item ui-sref-active="active-state" ng-click="nav.close()">
+        <div md-ink-ripple layout="row" layout-align="start center">
+          <md-button class="ig-icon-button md-icon">
+            <md-icon md-svg-src="images/wni_feedback.svg" aria-label="Feedback"></md-icon>
+          </md-button>
+          <div>Feedback</div>
+        </div>
+      </md-list-item>
+    </a>
+    <md-divider class="nav-drawer-divider"></md-divider>
+    <a>
+     <md-list-item ng-click="closeApplication()">
+        <div md-ink-ripple layout="row" layout-align="start center">
+          <md-button class="ig-icon-button md-icon">
+            <md-icon md-svg-src="images/wni_close.svg" aria-label="Exit"></md-icon>
+          </md-button>
+          <div>Exit</div>
+        </div>
+     </md-list-item>
+    </a>
+    <md-divider class="nav-drawer-divider"></md-divider>
+    <md-list-item class="archiving" ng-hide="pendingPhotoCount==0">
+      <div class="archiving" md-ink-ripple layout="row" layout-align="start center">
+        <md-button class="ig-icon-button md-icon">
+          <md-icon md-svg-src="images/wni_thum-clock-yellow-1x.svg" aria-label="Archiving Photos"></md-icon>
+        </md-button>
+        <div>Archiving {{pendingPhotoCount}} Photos...</div>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-sidenav>

@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  let MINIMUM_CONTAINER_VERSION = "1.20.X";
+
   //const angular = require('angular');
 
   var _ = require('lodash');
@@ -12,179 +14,65 @@
   require('angular-aria');
   require('angular-resource');
   require('angular-sanitize');
+  require('angular-spinners')
   require('angular-material-icons');
   require('babel-core/external-helpers.js');
   //require('angular-data-table/release/dataTable.cjs.js');
   require('slipjs');
   require('angular-slip');
   require('jquery-sticky');
+  require('./components/shared/soapRx/soap.js')
+  require('./components/shared/conditioning/conditioningService.js')
+  require('./components/shared/validation/validationService.js')
+  require('./components/shared/dimensions/dimensionService.js');
   require('./config/ngConstants.js');
-  require('./components/shared/twm/twmPhotoUploadService.js')
-  require('./components/shared/twm/twmService.js')
+  require('rx-angular')
+  require('./components/shared/listServices/listServices.js')
+  require('./components/shared/autoSave/autoSave.js')
+  require('./components/xpo/directives.js')
+  require("./filters/xpo-filters.js")
+  require('./components/shared/twm/twm.js')
+  require('./background/services.js')
   require('angular-uuid');
-  //require('kaazing-web-socket');
-  //require('kaazing-jms-client'); // browserify-shim import does not work - JmsClient.js creates a ByteOrder prototype variable that throws an error when imported as a browserify web component
+  let httpInterceptor = require('./config/interceptors/httpInterceptor.js');
+  let appConfig = require('./config/appConfig.js');
+
+  const ngModule = angular.module('igApp', ['ui.router', 'ngMaterial', 'ngMdIcons', 'ngResource', 'ngSanitize',
+      'ngMessages', 'ngAria', 'slip', 'igApp.constants', 'datatables', 'datatables.colreorder', 'datatables.colvis', 'angularSpinners',
+      'conditioningService', 'validationService', 'xpoDirectives', 'inspectionAutoSave', 'xpoCustomFilters', 'xpoAngularSoap', 'dimensionService',
+      'angular-uuid', 'twmPhotoUploadService', 'twmService','igApp.backgroundServices', 'rx', 'planningListService', 'inspectionListService']);
 
 
 
-  const ngModule = angular.module('igApp', ['ui.router', 'ngMaterial', 'ngMdIcons', 'ngResource', 'ngTouch', 'ngSanitize',
-      'ngMessages', 'ngAria', 'slip', 'igApp.constants', 'datatables', 'datatables.colreorder', 'datatables.colvis', 'angular-uuid', 'twmPhotoUploadService', 'twmService']);
+  ngModule.factory('httpLoggingInterceptor', httpInterceptor);
 
-  function AppController /*@ngInject*/ ($rootScope, $scope, $log, $mdUtil, $mdDialog, $state, $timeout, inspectionService)
-  {
-    $log.info("Loaded AppController");
-
-    $scope.submitPro = function(ev) {
-      // Appending dialog to document.body to cover sidenav in docs app
-      $mdDialog.show({
-        controller :'AppController',
-        templateUrl: 'partials/inspectionInProgress/submit.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-      }).then(function(answer) {
-        $log.info("SubmitCall " + answer);
-      });
-    };
-
-    $scope.movePro = function(ev) {
-      // Appending dialog to document.body to cover sidenav in docs app
-      $mdDialog.show({
-        controller :'AppController',
-        templateUrl: 'partials/inspectionInProgress/move.html',
-        parent: angular.element(document.body),
-        targetEvent: ev
-      }).then(function(answer) {
-        $log.info("MoveProCall " + answer);
-      });
-    };
-
-     $scope.$on('userDetailsChanged', (userInfo) => {
-      console.log('Listening');
-      //vm.userInfo = vm.userService.getUserInfo();
-      //vm._$log.info("userDetailsChanged" + vm.userInfo);
-    });
-
-    $scope.currInspection = inspectionService.getCurrInspection();
-
-    //$scope.closeDialog = function(answer) {
-    //  $mdDialog.hide(answer);
-    //}
-
-
-
-
-
-    $scope.prevInspections = require("./utils/prev_inspects_proto_list");
-
-
-  } //end AppController
-
+  /* @ngInject */
   ngModule
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider, $logProvider,$httpProvider) {
-        $locationProvider.html5Mode(true);
-        $logProvider.debugEnabled(true); //false to prevent _$log.debug output
-        $httpProvider.defaults.useXDomain = true;
+    .config(appConfig);
 
-        //
-        // For any unmatched url, redirect to /inspection
-        $urlRouterProvider.otherwise("");
-        // Now set up the states
-        $stateProvider
-          .state('list', {
-            url: '/inspectionList',
-            views: {
-              '': {
-                templateUrl: 'partials/inspectionList/index.html',
-                controller: 'inspectionListController as vm'
-              },
-              'grid@list': {
-                templateUrl: 'partials/inspectionList/grid.html'
-              }
-            },
-            data: {
-                toolbarClass: "inspect",
-                rootState: true
-            }
-          })
-          .state('shipmentDetails', {
-            url: '/shipmentDetails',
-            views: {
-              '': {
-                templateUrl: 'partials/shipmentDetails/index.html',
-                controller: 'shipmentDetailsController as vm'
-              }
-            },
-            data: {
-                toolbarClass: "inspect"
-            }
-          })
-          .state('inspectionInProgress', {
-            url: '/inspectionInProgress',
-            views: {
-              '': {
-                templateUrl: 'partials/inspectionInProgress/index.html',
-                controller: 'inspectionInProgressController as vm'
-              }
-            },
-            data: {
-                toolbarClass: "inspect"
-            }
-          })
-          .state('viewPhoto', {
-          url: '/viewPhoto',
-          views: {
-            '': {
-              templateUrl: 'partials/viewPhoto/index.html',
-              controller: 'viewPhotoController as vm'
-            }
-          },
-          data: {
-            toolbarClass: "viewphoto"
-          }
-        })
-        .state('tableSettings', {
-          url: '/tableSettings',
-          views: {
-            '': {
-              templateUrl: 'partials/userSettings/tableSettings.html',
-              controller: 'tableSettingsController as vm'
-            }
-          },
-          data: {
-            toolbarClass: "inspect",
-            rootState: true
-          }
-        })
-        .state('lookup', {
-          url: '/lookup',
-          views: {
-            '': {
-              templateUrl: 'partials/lookup/index.html',
-              controller: 'lookupController as vm'
-            }
-          },
-          data: {
-            toolbarClass: "inspect"
-          }
-        })
-        .state('manifestDetails', {
-          url: '/manifestDetails',
-          views: {
-            '': {
-              templateUrl: 'partials/manifestDetails/index.html',
-              controller: 'manifestDetailsController as vm'
-            }
-          },
-          data: {
-            toolbarClass: "inspect"
-          }
-        });
-    });
-
-    ngModule.run( ($log, $rootScope, $mdDialog, $mdToast, $window, $state, $resource, $q, igUtils, userService,inspectionService,
-                   persistenceService, navigationService) => {
+    /* @ngInject */
+    ngModule.run( ($log, $rootScope, $http, $mdToast, $window, $state, $resource, $q, igUtils, userService,inspectionService,
+     persistenceService, navigationService, dialogService) => {
       $log.debug("Running angular module ngModule");
-      var indexDBStores = ['I-Shipments'];
+      //set the version number to be used from the container app
+      $http.get("./package.json").success(function(data){$window.version = data.version;});
+      igUtils.getAppVersionInformation().then((vInfo) => {
+        let dialogArgs = {
+          "dialogTitle" : "Update Application",
+          "dialogContent" : `Your version of the Inspection application must be updated before you can proceed.
+                             Please contact the Help Desk for assistance in getting the latest version.`
+        };
+        let locals = dialogService.buildDialogBindings(dialogArgs);
+        let currVersions = vInfo[0].Version.split(".");
+        let minVersions = MINIMUM_CONTAINER_VERSION.split(".");
+        let versionIsInvalid = (currVersion, minVersion) => { return parseInt(currVersion, 10) < parseInt(minVersion, 10) };
+
+        if(versionIsInvalid(currVersions[0], minVersions[0]) || versionIsInvalid(currVersions[1], minVersions[1])
+            || (!isNaN(parseInt(minVersions[2]), 10) && versionIsInvalid(currVersions[2], minVersions[2]))) {
+          $log.error(`Unsupported container version detected. Shutting down the application.`);
+          dialogService.alert(locals, $rootScope.closeApplication)
+        }
+      });
 
       // Add any listeners that apply regardless of application state
       //TODO: THIS WILL NEED TO CHANGE TO REGISTERSHELLEXCEPTIONLISTENER WITH A PROMISE.
@@ -197,36 +85,40 @@
       });
 
 
-      $rootScope.$on('$stateChangeStart', (event,toState,toParams,fromState,fromParams) => {
-        if(navigationService._pushOrPop && navigationService._pushOrPop=='POP'){
-          console.log(navigationService._stateStack);
-          navigationService._pushOrPop='';
-        }else{
-          navigationService.pushState(toState.name);
+      $rootScope.$on('$stateChangeSuccess', (event,toState,toParams,fromState,fromParams) => {
+        navigationService.pushState(toState,toParams,fromState,fromParams);
+        if (toState.data != undefined && toState.data.rootState == true){
+          persistenceService.clearCollapsibleState();
+          inspectionService.setCurrentInspection({});
+          inspectionService.setCurrentShipment({});
         }
+      });
+
+      $rootScope.$on('$stateNotFound',(event, unfoundState, fromState, fromParams) => {
+        navigationService.defaultState();
       });
       // end listeners
 
 
+
+
       /**
-       * Displays a toast message to the user in the lower right corner of the screen
+       * Displays a toast message to the user in the top right corner of the screen
        * @param msg The message to be displayed
        * @param duration The length of time in seconds that the message will display
        */
-      $rootScope.toast = (msg, duration) => {
-        var _duration = 3000;
-        if(duration) {
-          _duration = duration * 1000;
-        }
+      $rootScope.toast = (msg, duration = 3) => {
+        var _duration = duration * 1000;
         $mdToast.show(
           $mdToast.simple()
             .content(msg)
             .position("top right")
             .hideDelay(_duration)
+            .parent(".ig-header-wrapper")
         );
       };
 
-      $rootScope.close = function(event) {
+      $rootScope.closeApplication = function(event) {
         $log.info("Closing application");
         if (igUtils.isExternalFunc('closeApplication')) {
           container.closeApplication();
@@ -239,7 +131,7 @@
           // Inside of container app
           userService.getUserDetails(userCred.Domain,userCred.Username)
             .then(() =>{
-                $state.go('list');
+                navigationService.defaultState();
               }
               ,(error) => {
                 $log.error("No user Details Found");
@@ -248,7 +140,7 @@
           // Outside of container app
           userService.getUserDetails("conway","cse.inspector")
             .then(() =>{
-                $state.go('list');
+                navigationService.defaultState();
               }
               ,(error) => {
                 $log.error("No user Details Found");
@@ -262,27 +154,35 @@
       };
     });
 
-    ngModule.controller('AppController', AppController);
-
     require('./components/igCollapsible')(ngModule);
     require('./components/igGalleryImage')(ngModule);
     require('./components/igHeader')(ngModule);
+    require('./components/igNotifyOnLoad')(ngModule);
+    require('./components/igNetworkDisconnected')(ngModule);
     require('./components/dimensionRow')(ngModule);
-    require('./components/customValidation')(ngModule);
     require('./components/manifestItem')(ngModule);
     require('./components/shared/camera')(ngModule);
     require('./components/shared/igUtils')(ngModule);
     require('./components/shared/inspection')(ngModule);
+    require('./components/shared/soapRx')(ngModule)
+    require('./components/shared/document')(ngModule)
     require('./components/shared/user')(ngModule);
-    require('./components/shared/validation')(ngModule);
+    require('./components/shared/logging')(ngModule);
+    require('./components/shared/shipmentDetails')(ngModule);
+    require('./components/shared/shipmentAction')(ngModule);
+    require('./components/igActionMenu')(ngModule);
+    require('./components/virtualKeyboardControl')(ngModule)
     require('./partials/shipmentDetails')(ngModule);
     require('./partials/inspectionInProgress')(ngModule);
     require('./partials/inspectionList')(ngModule);
     require('./partials/userSettings')(ngModule);
     require('./partials/lookup')(ngModule);
-    require('./partials/viewPhoto')(ngModule);
+    require('./partials/viewArchiveDoc')(ngModule);
     require('./partials/nav')(ngModule);
     require('./partials/dialogs')(ngModule);
     require('./partials/manifestDetails')(ngModule);
+    require('./partials/addPro')(ngModule);
+    require('./partials/feedback')(ngModule);
+
 
 })();

@@ -1,0 +1,32 @@
+{
+  "pic1" : {
+    "docID" : 1,
+    "docClass" : "BL",
+    "docContent" :["images/testFaceBook.png","images/testGoogle.png"],
+    "DmsOpCode": "C"
+  },
+  "pic2" : {
+    "docID" : 2,
+    "docClass" : "BLAT",
+    "docContent" :["images/testFaceBook.png"],
+    "DmsOpCode": "C"
+  },
+  "pic3" : {
+    "docID": 3,
+    "docClass" : "CUST",
+    "docContent" :["images/big_image.jpg","images/testFaceBook.png"],
+    "DmsOpCode": "C"
+  },
+  "pic4" : {
+    "docID" : 4,
+    "docClass" : "NCIC",
+    "docContent" :["images/wni_thumb-nmfcinspcert-3x.svg"],
+    "DmsOpCode": "C"
+  },
+  "pic5" : {
+    "docID" : 5,
+    "docClass" : "WI",
+    "docContent" :["images/wni_thumb-wghtcorrcert-3x.svg"],
+    "DmsOpCode": "C"
+  }
+}

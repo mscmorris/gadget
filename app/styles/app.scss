@@ -3,13 +3,17 @@
 @import "app/components/igCollapsible/collapsible.scss";
 @import "app/components/igGalleryImage/gallery-image.scss";
 @import "app/components/igHeader/header.scss";
+@import "app/components/igNetworkDisconnected/igNetworkDisconnected.scss";
+@import "app/partials/nav/nav.scss";
 @import "app/partials/inspectionInProgress/inspection.scss";
 @import "app/partials/inspectionList/inspectionList.scss";
-@import "app/partials/viewPhoto/viewPhoto.scss";
+@import "app/partials/viewArchiveDoc/viewArchiveDoc.scss";
 @import "app/partials/shipmentDetails/shipmentDetails.scss";
 @import "app/partials/userSettings/tableSettings.scss";
 @import "app/partials/manifestDetails/manifestDetails.scss";
 @import "app/components/manifestItem/manifestItem.scss";
+@import "app/partials/addPro/addPro.scss";
+@import "app/partials/feedback/feedback.scss";
 
 //@import "app/partials/planning/planning.scss"; -- (Denver): this is currently empty and I'm not sure if it will be used
 
@@ -18,7 +22,6 @@
 body {
   font-family: $font-base-family;
 }
-
 a {
   text-decoration: none;
 }
@@ -28,16 +31,33 @@ a {
   outline: 0;
 }
 
+input {
+  padding-left: .4rem;
+}
+
+textarea{
+  padding-left: .4rem;
+}
 svg {
   fill: $body-text-light;
 }
 
+pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  margin: 0;
+}
+
 md-toast {
-  font-size: 1rem;
-  min-height: 4rem;
-  max-height: 100%;
-  padding: .5rem;
   z-index: 250;
+  .md-toast-content {
+    min-height: 4rem;
+    max-height: 100%;
+    font-size: 1rem;
+  }
+}
+.md-dialog-container{
+  background:rgba(0,0,0,.6);
 }
 
 .text-offset {
@@ -67,7 +87,7 @@ md-toast {
   font-weight: bold;
 }
 
-.txt-center {
+.text-center {
   text-align: center;
 }
 
@@ -79,6 +99,10 @@ textarea, textarea.ng-valid {
   border-color: $xposupp-grey3-hex;
   border-width: thin;
   min-height: 6em;
+}
+
+.preserve-newlines {
+  white-space: pre-wrap;
 }
 
 #master-page, md-content {
@@ -197,11 +221,12 @@ textarea, textarea.ng-valid {
 }
 
 #sicChange {
-  color:$body-text-light;
-  background-color: $xposupp-grey2-hex;
+
+  color:$xposupp-grey1-hex;
+  background-color: $body-text-light;
   min-width: 400px;
   .dialog-row {
-    height: 3.8rem;
+    min-height: 3.8rem;
   }
   .input-contain {
     @extend .dialog-row;
@@ -209,6 +234,7 @@ textarea, textarea.ng-valid {
     font-size: 1rem;
   }
   .select{
+
     margin: 0;
     border-radius: 5px;
   }
@@ -216,29 +242,41 @@ textarea, textarea.ng-valid {
     width: 100%;
     height:2rem;
     border-radius: 5px;
+    padding: 0rem 0rem 0rem .5rem;
   }
   md-divider {
-    border-top-color:$nested1-bg-color;
+    border-top-color:$nested2-bg-color;
   }
   md-list {
     padding-bottom: 0;
   }
+
+
   .submitButton{
     margin:0;
-    height: 100%;
     width:100%;
     line-height: 2.8rem;
-    background-color: $xpo-red-hex;
-    color:$body-text-light;
+    background-color:$body-text-light;
+    color:$xpo-red-hex;
     font-size: 1rem;
+    &:disabled {
+      opacity: 0.35;
+    }
   }
   md-select.md-default-theme:not([disabled]):focus, md-select:not([disabled]):focus .md-select-value {
     border-bottom-color: $xpocust-portal-blue-hex;
-    color:$body-text-light;
+    color: $xposupp-grey1-hex;
   }
   md-select.md-default-theme, md-select .md-select-value {
     border-bottom-color: $body-text-light;
   }
+}
+md-option .md-text{
+  font-size: 1rem;
+}
+
+.md-select-menu.md-default-theme md-option[selected], md-select-menu md-option[selected] {
+  background:$xpo-red-hex;
 }
 
 .iframeWrapper {
@@ -257,71 +295,9 @@ textarea, textarea.ng-valid {
 }
 /* END DIALOG STYLES */
 
-.nav-drawer {
-  $navd-border-color: #ACACAC;
-  $navd-border-width: 1px;
-  $navd-border-style: solid;
-
-  md-item-content {
-    background-color: $xpocust-portal-grey-hex;
-    border: $navd-border-width $navd-border-style $navd-border-color;
-  }
-
-  md-list {
-    padding: 0;
-  }
-
-  a {
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
-  }
-
-  .nav-draw-divide {
-    border: none;
-    margin: 2em 0;
-  }
-
-  .nav-drawer-li {
-    border-top: $navd-border-width $navd-border-style $navd-border-color;
-    border-bottom: $navd-border-width $navd-border-style $navd-border-color;
-  }
-
-  .nav-drawer-li-green {
-    @extend .nav-drawer-li;
-    background-color: $alt-green-hex;
-  }
-
-  .nav-drawer-li-red {
-    @extend .nav-drawer-li;
-    background-color: $xpo-red-hex;
-  }
-
-  .nav-drawer-li-blue {
-    @extend .nav-drawer-li;
-    background-color: $alt-navy-hex;
-  }
-
-  .nav-drawer-li-yellow {
-    @extend .nav-drawer-li;
-    background-color: $alt-yellow-da-hex;
-  }
-
-}
-
-/* Navigation font size should be 1.125rem adjusting to the root font sizes designated
-by $font-base-size-web and $font-base-size-tab */
-.nav-text {
-  font-size: 1.125rem;
-}
-
-.nav-text-sm {
-  font-size: .75rem;
-}
-
 /* Style for icons since Angular Material <md-icon> doesn't support PNG format */
 .ig-icon-button {
-  padding: 7px !important;
+  padding: 7px;
   min-width: 0;
   min-height: 0;
   line-height: normal;
@@ -345,6 +321,10 @@ by $font-base-size-web and $font-base-size-tab */
 .spacetop-1 {
   margin-top: 1rem;
 }
+
+.spacetop-minus-1 {
+  margin-top: -1rem;
+}
 .spacetop-2 {
   margin-top: 2rem;
 }
@@ -361,11 +341,7 @@ by $font-base-size-web and $font-base-size-tab */
   margin-right: 4rem;
 }
 
-.space-top-minus-1{
-  margin-top:-1rem;
-}
-
-.space-bottom-2{
+.spacebottom-2{
   margin-bottom: 2rem;
 }
 /* END LAYOUT SPACING STYLES */
@@ -421,12 +397,15 @@ div.dimension-details {
   .content-divider {
     @extend .text-offset;
     margin: 0;
-    font-size: 1rem;
+    font-size: .8rem;
     display: flex;
     align-self: flex-end;
     justify-content: center;
   }
 
+  .seq-num {
+    margin-right: .5rem;
+  }
 
   .container-pieces {
     margin-bottom: 1rem;
@@ -454,6 +433,20 @@ div.dimension-details {
   }
 }
 
+  #loading{
+    .margin-top{
+      margin-top:2rem;
+    }
+
+    .margin-top-bottom{
+      margin:1rem;
+    }
+
+    .cursor{
+      cursor: pointer;
+    }
+  }
+
 .action-btn {
   border: 1px $xpo-red-hex solid;
   padding: .5rem;
@@ -476,6 +469,12 @@ div.dimension-details {
 
   &:disabled {
     opacity: 0.35;
+  }
+
+  .action-btn-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: .3rem .3rem .3rem 0rem;
   }
 }
 
@@ -518,8 +517,15 @@ div.dimension-details {
   }
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 800px) {
+/* Responsive: Viewports up to and including Portrait orientation */
+@media screen and (max-width: 800px) {
+  html {
+    font-size: $font-base-size-web;
+  }
+}
+
+/* Responsive: Landscape tablets and up */
+@media screen and (min-width: 801px) {
   html {
     font-size: $font-base-size-tab;
   }

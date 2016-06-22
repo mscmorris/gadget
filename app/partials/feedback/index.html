@@ -1,0 +1,21 @@
+<div id="mainContent">
+  <ig-header data-title="Feedback" flex-val="initial"><hr class="tbar-vertical-divider-inspect"></ig-header>
+  <div id="feedback" layout="column">
+    <div layout="column">
+      <div>If you are experiencing an emergency, contact the Help Desk at 1-877-411-4151.</div>
+      <md-input-container id="input-container" md-no-float>
+        <md-select ng-model="vm.selectedCategory" id="category" placeholder="- Select type -">
+          <md-option ng-repeat="category in vm.categories" ng-value="category">{{ category }}</md-option>
+        </md-select>
+      </md-input-container>
+      <span>Comments</span>
+      <div layout="column">
+        <textarea ng-model="vm.comments" placeholder="Please be as specific as possible." autofocus="true" virtual-keyboard-control></textarea>
+      </div>
+    </div>
+    <div layout="row">
+      <button id="sendFeedback" ng-disabled="!(vm.comments && vm.selectedCategory)" class="action-btn" ng-click="vm.sendFeedback()" layout="row" layout-align="start center">Send Feedback</button>
+    </div>
+  <span layout="row" class="content-item">* Note: you may be contacted later for additional feedback.</span>
+  </div>
+</div>

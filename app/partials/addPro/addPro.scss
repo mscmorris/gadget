@@ -1,0 +1,23 @@
+#addPro {
+  padding: 0 1rem; 
+
+  > div {
+    padding: 1rem;
+  }
+
+  button:first-child {
+    margin-right: 1rem;
+  }
+
+  input {
+    width: 100%;
+    border: {
+      top: 0;
+      left: 0;
+      bottom: 1px;
+      right: 0;
+      style: solid;
+      color: black;
+    }
+  }
+}

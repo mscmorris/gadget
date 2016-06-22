@@ -1,12 +1,6 @@
-"use strict"
+import Rx from 'rx'
 
-import Rx from "rx"
-
-export function countConsumed(consumer) {
-  return consumer.scan(a => a + 1, 0)
-}
-
-export default function(session, what) {
+export default function(session, what, selector) {
   var subject
 
   subject = new Rx.Subject()

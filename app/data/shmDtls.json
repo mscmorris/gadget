@@ -57,7 +57,7 @@
     "breakDoor": "13P",
     "eta": "2015-12-06",
     "trailerNbr": "123EFU",
-    "billClassCd": "NORM",
+    "billClassCd": "D",
     "accessorialChargeCd": ["MNC", "XLF", "ELS"],
     "totChargeAmt": 248,
     "totPieceCnt": 2,
@@ -71,45 +71,12 @@
       "enteredDateTime": "2015-12-06"
     }]
   },
-  "prevInspectionDetails": [{
-    "sourceOfRecommendation": "1",
-    "shipmentInstID": "12345",
-    "proNbr": "1221223",
-    "inspectorPieceDimensions": [{
-      "seq": 1,
-      "pieceCnt": 1,
-      "inspectorDimensions": {
-        "seq": 1,
-        "length": 12,
-        "width": 5,
-        "height": 4
-      }
-    },
-      {
-        "seq": 2,
-        "pieceCnt": 1,
-        "inspectorDimensions": {
-          "seq": 1,
-          "length": 10,
-          "width": 6,
-          "height": 4
-        }
-      }],
-    "totGrossVolume": "UPO",
-    "totDensity": "XIN",
-    "inspectionStatusCd": "1",
-    "inspectionDateTime": "2015-12-06",
-    "inspectionContext": {
-      "inspectionSIC": "UPO",
-      "shiftCd": "I",
-      "inspectorFirstName": "VINCENT",
-      "inspectorLastName": "MULKA",
-      "inspectorEmployeeID": "h8703"
-    },
-    "inspectionNotes": {
-      "note": "Hello",
-      "enteredByID": "H8703",
-      "enteredDateTime": "2015-12-06"
-    }
-  }]
+  "currentInspectionDetails": {
+    "custSpecificInspGuidelines" :[
+      {"customerID" :{"custName" :"OXO International Limited"},
+        "customerGuidelines" : {"note" : "Do not open boxes."}},
+      {"customerID" :{"custName" :"American Condenser"},
+        "customerGuidelines" : {"note" : "Due to the combined material construction of these companies' swivel chairs, they are accurately described on the Bill of Lading under NMFC item 156600.  Do not change to a different number, including 79260 and 80770, which are not accurate or consistent to the product being shipped."}}
+    ]
+  }
 }

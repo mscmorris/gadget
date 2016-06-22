@@ -4,4 +4,6 @@ export default ngModule => {
   require('./persistenceService')(ngModule);
   require('./navigationService')(ngModule);
   require('./dialogService')(ngModule);
+  require('./endPointLocatorService')(ngModule);
+  require('./httpSessionService')(ngModule);
 };

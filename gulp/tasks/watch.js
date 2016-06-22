@@ -23,6 +23,7 @@ module.exports = function () {
     'app/app.js',
     'app/styles/app.scss',
     'app/utils/*.js',
+    'app/config/**/*.js',
     'app/components',
     'app/components/**/*.html',
     'app/components/**/*.js',

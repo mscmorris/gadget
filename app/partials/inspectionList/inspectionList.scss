@@ -1,5 +1,5 @@
 /* Inspection List datatable styles */
-table.dataTable {
+table.dataTable.ig-data-table {
   border-collapse: collapse;
 
   thead {
@@ -50,54 +50,73 @@ table.dataTable {
 
   }
 
+  tr.odd {
+    $odd-bg-color: #FFFFFF;
+    background-color: $odd-bg-color;
+    &.row-selected {
+      background-color: $xposupp-grey1-hex !important;
+      color: $body-text-light;
+    }
+    &:hover {
+      background-color: $odd-bg-color;
+    }
+  }
+
+  tr.even {
+    $even-bg-color: #F6F6F6;
+    background-color: $even-bg-color;
+    &.row-selected {
+      background-color: $xpo-black-hex !important;
+      color: $body-text-light;
+    }
+    &:hover {
+      background-color: $even-bg-color;
+    }
+  }
+
   tr {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 
+    &.urgent {
+      position: relative;
+      background-color: #FFE0C2;
+
+      &:before {
+        content: '';
+        position: absolute;
+        z-index: 10;
+        background-color: #FF6600;
+        -webkit-mask-image: url(../images/wni_priority_tag.svg);
+        mask-image: url(../images/wni_priority_tag.svg);
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        background-color: #FFE0C2;
+      }
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: 10;
+    }
+
     td {
       padding: 1rem .5rem;
       text-align: left;
       //white-space: nowrap;
-    }
-
-  }
-
-  .odd {
-    &:hover {
-      background-color: $xposupp-grey3-hex !important;
-    }
-    &.row-selected {
-      background-color: $xposupp-grey1-hex;
-      color: $body-text-light;
-      &:hover {
-        color: $xpo-black-hex;
-      }
-    }
-  }
-
-  .even {
-    background-color: $content-bg-color;
-    &:hover {
-      background-color: $xposupp-grey3-hex !important;
-    }
-    &.row-selected {
-      background-color: $xpo-black-hex;
-      color: $body-text-light;
-      &:hover {
-        color: $xpo-black-hex;
+      &.dataTables_empty {
+        text-align: center;
       }
     }
   }
 }
 /* End datatable styles */
-
-@media screen and (max-width: 1280px) {
-  .refresh-info {
-    font-size: .8rem;
-  }
-}
 
 //we don't want to show the default colvis drop-down
 div .ColVis {

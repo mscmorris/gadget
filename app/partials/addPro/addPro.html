@@ -1,0 +1,23 @@
+<ig-header data-title="Add PROs" flex-val="0"></ig-header>
+<div id="addPro">
+  <div layout="row">
+    Enter or paste PRO(s) below
+  </div>
+  <div ng-if="errorMsg" layout="row">
+    <span class="text-error">{{errorMsg}}</span>
+  </div>
+  <div layout="column" class="content-item">
+    <textarea placeholder="Separate PRO(s) by comma, semi-colon, spaces, or line breaks" ng-model="proString" autofocus="true" virtual-keyboard-control></textarea>
+  </div>
+  <div layout="row">
+    <!-- This Feature will be implemented in phase 2-->
+    <!--<button class="action-btn" ng-click="vm.addToInspection()" layout="row" layout-align="start center">
+      <md-icon md-svg-src="images/wni_control-submit-2x.svg" class="action-btn-icon" aria-label="Add to Inspection List"></md-icon>
+      Add to Inspection List
+    </button>-->
+    <button class="action-btn" ng-click="vm.addToPlanning()" layout="row" layout-align="start center">
+      <md-icon md-svg-src="images/wni_planninglist-2x.svg" class="action-btn-icon" aria-label="Add to Planning List"></md-icon>
+      Add to Planning List
+    </button>
+  </div>
+</div>

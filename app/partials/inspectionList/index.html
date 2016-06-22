@@ -1,55 +1,53 @@
 <div id="index">
   <ig-header data-title="Inspection" flex-val="0">
     <div layout="row" layout-align="center center" layout-padding flex="auto">
-      <md-icon md-svg-src="images/wni_control-refresh-2x.svg" class="ig-icon-button toolbar-btn" ng-click="vm.refreshInspectionShipmentsList()" aria-label="Refresh"></md-icon>
-      <p class="refresh-info">{{vm.listCount +" shipments " + vm.insRefreshTimeStmp}}</p>
+      <md-icon md-svg-src="images/wni_control-refresh-2x.svg" class="ig-icon-button toolbar-btn refresh-icon" aria-label="Refresh" ng-click="vm.refreshInspectionShipmentsList()"></md-icon>
+      <p class="refresh-text" ng-click="vm.refreshInspectionShipmentsList()">{{vm.listCount +" shipments " + vm.insRefreshTimeStmp}}</p>
     </div>
     <span flex></span>
     <hr class="tbar-vertical-divider-inspect">
-    <md-menu-bar>
-      <md-menu>
-        <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="$mdOpenMenu()">
-          <md-icon md-svg-src="images/wni_control-select-2x.svg" class="ig-icon-button" aria-label="Select"></md-icon>
-          Select
-        </div>
-        <md-menu-content>
-          <md-menu-item>
-            <button ng-click="vm.selectAllShipments()">
-              Select all shipments
-            </button>
-          </md-menu-item>
-          <md-menu-item>
-            <button ng-click="vm.deSelectAllShipments()">
-              Deselect all shipments
-            </button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-      <hr class="tbar-vertical-divider-inspect">
-      <md-menu>
-        <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="$mdOpenMenu()">
-          <md-icon md-svg-src="images/wni_control-action-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
-          Action
-        </div>
-        <md-menu-content>
-          <md-menu-item>
-            <button ng-click="vm.setInspectionStatus('Y', 'Shipment(s) moved to Planning List.')">
-              Move selected to planning list
-            </button>
-          </md-menu-item>
-          <md-menu-item>
-            <button ng-click="vm.setInspectionStatus('X', 'Shipment(s) dismissed.')">
-              Dismiss selected shipments
-            </button>
-          </md-menu-item>
-          <md-menu-item>
-            <button ng-click="vm.setInspectionStatus('N', 'Shipment(s) marked as Inspected Not Corrected.')">
-              Mark inspected but not corrected
-            </button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-    </md-menu-bar>
+    <md-menu md-offset="0 55">
+      <button layout="row" layout-align="start center" class="toolbar-btn" ng-click="$mdOpenMenu()">
+        <md-icon md-svg-src="images/wni_control-select-2x.svg" class="ig-icon-button" aria-label="Select"></md-icon>
+        Select
+      </button>
+      <md-menu-content>
+        <md-menu-item>
+          <md-button ng-click="vm.selectAllShipments()">
+            Select all shipments
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="vm.deSelectAllShipments()">
+            Deselect all shipments
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <hr class="tbar-vertical-divider-inspect">
+    <md-menu md-offset="0 55">
+      <button layout="row" layout-align="start center" class="toolbar-btn" ng-click="vm.showActionMenu($mdOpenMenu)">
+        <md-icon md-svg-src="images/wni_control-action-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
+        Action
+      </button>
+      <md-menu-content>
+        <md-menu-item>
+          <md-button ng-click="vm.setInspectionStatus('Y', 'Shipment(s) moved to Planning List.')">
+            Move selected to planning list
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="vm.setInspectionStatus('X', 'Shipment(s) dismissed.')">
+            Dismiss selected shipments
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="vm.setInspectionStatus('N', 'Shipment(s) marked as Inspected Not Corrected.')">
+            Mark inspected and not corrected
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
     <!--<hr class="tbar-vertical-divider-inspect">-->
     <!--<md-menu>-->
     <!--<div id="table-settings-entry" layout="row" layout-align="start center" class="toolbar-btn" ng-click="vm.openMenu($mdOpenMenu, $event)">-->

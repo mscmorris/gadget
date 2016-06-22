@@ -1,4 +1,4 @@
-import moment from 'moment';
+var moment = require('moment');
 import _ from 'lodash';
 
 export default ngModule => {
@@ -24,7 +24,7 @@ export default ngModule => {
      * @param defaultVal
      */
     mapProp(mapObj, dataSrc, mappedKey, srcKey, defaultVal) {
-      mapObj[mappedKey] = (typeof dataSrc[srcKey] !== 'undefined' && dataSrc[srcKey] !== null) ? dataSrc[srcKey] : defaultVal;
+      mapObj[mappedKey] = (typeof dataSrc[srcKey] !== 'undefined' && dataSrc[srcKey] !== null && dataSrc[srcKey] !== "") ? dataSrc[srcKey] : defaultVal;
     }
 
     /**
@@ -87,12 +87,22 @@ export default ngModule => {
           mapObj.agreementFAKText.push(val);
         });
       }
-      vm.mapProp(mapObj, dataSrc, "item15Exempt", "item15Exempt", "");
-      vm.mapProp(mapObj, dataSrc, "elsExempt", "elsExempt", "");
-      vm.mapProp(mapObj, dataSrc, "linealExempt", "linealExempt", "");
+      vm.mapProp(mapObj, dataSrc, "item15Exempt", "item15Exempt", "N");
+      vm.mapProp(mapObj, dataSrc, "elsExempt", "elsExempt", "N");
+      vm.mapProp(mapObj, dataSrc, "linealFootEligibility", "linealFootEligibility", "Y");
+      mapObj.linealFootRange = []; // Array
+      if(dataSrc.linealFootRange) {
+        angular.forEach(dataSrc.linealFootRange, (val, idx) => {
+          mapObj.linealFootRange.push(val);
+        });
+      }else{
+        mapObj.linealFootRange.push('14-99');
+      }
+      vm.mapProp(mapObj, dataSrc, "specialCapacityRuleInd", "specialCapacityRuleInd", "N");
       vm.mapProp(mapObj, dataSrc, "eta", "eta", "");
       vm.mapProp(mapObj, dataSrc, "trailerNbr", "trailerNbr", "");
       vm.mapProp(mapObj, dataSrc, "billClassCd", "billClassCd", "");
+      vm.mapProp(mapObj, dataSrc, "adminStatusCd", "adminStatusCd", "");
       mapObj.accessorialChargeCd = []; // Array
       if(dataSrc.accessorialChargeCd) {
         angular.forEach(dataSrc.accessorialChargeCd, (val, idx) => {
@@ -116,6 +126,7 @@ export default ngModule => {
           mapObj.remarks.push(rmk);
         });
       }
+
       return mapObj;
     }
 
@@ -127,7 +138,7 @@ export default ngModule => {
     mapPrevInspectionDetails(dataSrc) {
       var vm = this;
       var mapObj = {};
-      if (dataSrc.length <= 0) {
+      if (dataSrc === undefined || dataSrc.length <= 0) {
         return mapObj;
       }
 
@@ -159,23 +170,35 @@ export default ngModule => {
     mapInspectionDetails(dataSrc)
     {
       var vm = this;
-      var mapObj = {};
-      vm.mapProp(mapObj, dataSrc, "sourceOfRecommendation", "sourceOfRecommendation","");
-      vm.mapProp(mapObj, dataSrc, "shipmentInstID", "shipmentInstID","");
-      vm.mapProp(mapObj, dataSrc, "proNbr", "proNbr","");
+      var mapObj = [];
+      if (dataSrc.length <= 0) {
+        return mapObj;
+      }
+      if (dataSrc.constructor !== Array) {
+        dataSrc = [dataSrc];
+      }
+        angular.forEach(dataSrc, (currDataSrc) => {
+          var inspection = {};
+          vm.mapProp(inspection, currDataSrc, "sourceOfRecommendation", "sourceOfRecommendation", "");
+          vm.mapProp(inspection, currDataSrc, "shipmentInstID", "shipmentInstID", "");
+          vm.mapProp(inspection, currDataSrc, "proNbr", "proNbr", "");
+          vm.mapProp(inspection, currDataSrc, "pkupDate", "pkupDate", "");
 
-      mapObj.inspectorPieceDimensions = [];
-      mapObj.inspectorPieceDimensions = vm.mapInspectorPieceDimensions(dataSrc); // Array
+          inspection.inspectorPieceDimensions = [];
+          inspection.inspectorPieceDimensions = vm.mapInspectorPieceDimensions(currDataSrc); // Array
 
-      vm.mapProp(mapObj, dataSrc, "totGrossVolume", "totGrossVolume","");
-      vm.mapProp(mapObj, dataSrc, "totDensity", "totDensity","");
-      vm.mapProp(mapObj, dataSrc, "inspectionStatusCd", "inspectionStatusCd","");
-      vm.mapProp(mapObj, dataSrc, "inspectionDateTime", "inspectionDateTime","");
+          vm.mapProp(inspection, currDataSrc, "totGrossVolume", "totGrossVolume", "");
+          vm.mapProp(inspection, currDataSrc, "totDensity", "totDensity", "");
+          vm.mapProp(inspection, currDataSrc, "totGrossWeight", "totGrossWeight", "");
+          vm.mapProp(inspection, currDataSrc, "inspectionStatusCd", "inspectionStatusCd", "NONE");
+          vm.mapProp(inspection, currDataSrc, "inspectionDateTime", "inspectionDateTime", "");
 
-      mapObj.inspectionContext = vm.mapInspectionContext(dataSrc.inspectionContext); // Nested Object
-      mapObj.inspectionNotes = vm.mapInspectionNotes(dataSrc.inspectionNotes); // Nested Object
-      mapObj.custSpecificInspGuidelines = [];
-      mapObj.custSpecificInspGuidelines = vm.mapCustomerGuideLines(dataSrc); // Array
+          inspection.inspectionContext = vm.mapInspectionContext(currDataSrc.inspectionContext); // Nested Object
+          inspection.inspectionNotes = vm.mapInspectionNotes(currDataSrc.inspectionNotes); // Nested Object
+          mapObj.push(inspection);
+        })
+
+
       return mapObj;
     }
 
@@ -241,11 +264,15 @@ export default ngModule => {
       if(typeof dataSrc != "undefined") {
         angular.forEach(dataSrc.custSpecificInspGuidelines, (val) => {
           var guideLines ={};
+          guideLines.customerID = {};
+          guideLines.customerGuidelines ={};
 
-          vm.mapProp(guideLines, val, "note", "note","");
-          vm.mapProp(guideLines, val, "enteredByID", "enteredByID","");
-          vm.mapProp(guideLines, val, "enteredDateTime", "enteredDateTime","");
-          mapObj.push(guideLines);
+          if(val && val.customerID) {
+            vm.mapProp(guideLines.customerID, val.customerID, "custName", "custName","");
+            vm.mapProp(guideLines.customerGuidelines, val.customerGuidelines, "note", "note","");
+            mapObj.push(guideLines);
+          }
+
         });
 
       }
@@ -306,10 +333,21 @@ export default ngModule => {
      * HELPER METHODS FOR ASSIGNING DISPLAY VALUES
      */
     transBoolToYorN(bVal) {
-      if(bVal == true || bVal == "true" || bVal == 1) {
+      if(bVal == true || bVal == "true" || bVal == "T" || bVal == 1|| bVal == "Y" ) {
         return "Yes";
       } else {
         return "No";
+      }
+    }
+
+    /**
+     * HELPER METHODS FOR ASSIGNING DISPLAY VALUES
+     */
+    transInvertBoolToYorN(bVal) {
+      if(bVal == true || bVal == "true" || bVal == "T" || bVal == 1|| bVal == "Y" ) {
+        return "No";
+      } else {
+        return "Yes";
       }
     }
 
@@ -355,18 +393,18 @@ export default ngModule => {
     {
       var vm = this;
       var mapObj = {};
-      vm.mapProp(mapObj, dataSrc.currentInspection, "shipmentInstID", "shipmentInstID", "");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "proNbr", "proNbr", "");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "pkupDate", "pkupDate", "");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "inspectionStatusCd", "inspectionStatusCd", "NONE");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "inspectionDateTime", "inspectionDateTime", "");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "shipmentInstID", "shipmentInstID", "");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "proNbr", "proNbr", "");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "pkupDate", "pkupDate", "");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "totGrossWeight", "totGrossWeight", "");
+      vm.mapProp(mapObj, dataSrc.inspectionDetails, "inspectionStatusCd", "inspectionStatusCd", "");
+      vm.mapProp(mapObj, dataSrc.inspectionDetails, "inspectionDateTime", "inspectionDateTime",  moment().format());
       vm.mapProp(mapObj, dataSrc.inspectionDetails, "totGrossVolume", "totGrossVolume", "");
       vm.mapProp(mapObj, dataSrc.inspectionDetails, "totDensity", "totDensity", "");
       mapObj.inspectionContext = vm.mapInspectionContext(dataSrc.inspectionContext);
-      mapObj.inspectionContext.shiftCd = vm.transShiftValToCode(mapObj.inspectionContext.shiftCd);
       mapObj.inspectorPieceDimensions = dataSrc.inspectorPieceDimensions;
       mapObj.inspectionNotes = {}; // Nested Object
-      mapObj.inspectionNotes.note = dataSrc.inspectionDetails.inspectionNotes.note;
+      mapObj.inspectionNotes.note = (dataSrc.inspectionDetails.inspectionNotes) ? dataSrc.inspectionDetails.inspectionNotes.note : "";
       mapObj.inspectionNotes.enteredByID = dataSrc.inspectionContext.inspectorEmployeeID;
       mapObj.inspectionNotes.enteredDateTime = moment().format();
       mapObj.custSpecificInspGuidelines = []; // Nested Object
@@ -377,14 +415,106 @@ export default ngModule => {
     {
       var vm = this;
       var mapObj = {};
-      vm.mapProp(mapObj, dataSrc.currentInspection, "shipmentInstID", "shipmentInstID","");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "proNbr", "proNbr","");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "pkupDate", "pkupDate", "");
-      vm.mapProp(mapObj, dataSrc.currentInspection, "inspectionDateTime", "inspectionDateTime", "");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "shipmentInstID", "shipmentInstID","");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "proNbr", "proNbr","");
+      vm.mapProp(mapObj, dataSrc.currentShipment, "pkupDate", "pkupDate", "");
       mapObj.inspectionContext = vm.mapInspectionContext(dataSrc.inspectionContext);
       mapObj.inspectionContext.shiftCd = vm.transShiftValToCode(mapObj.inspectionContext.shiftCd);
-      mapObj.inspectorPieceDimensions = dataSrc.inspectorPieceDimensions;
+      mapObj.inspectionPieceDimensions = []; // REST API expects "inspectionPieceDimensions" as a param name instead of "inspector"
+      mapObj.inspectionPieceDimensions = dataSrc.inspectorPieceDimensions; // Array
       return mapObj;
+    }
+
+    mapInspectionContextToRemoteRequest(ctx)
+    {
+      var mapObj
+
+      mapObj = {}
+      Object.keys(ctx).forEach(key => {
+        if(key === "shiftCd") {
+          mapObj[key] = this.transShiftValToCode(ctx[key])
+        } else {
+          mapObj[key] = ctx[key]
+        }
+      })
+
+      return mapObj
+    }
+
+    mapCreateReqForManifest(dataSrc){
+      var vm = this;
+      var mapObj = {};
+
+      // todo : Need to figure planDate and loadDoor default values
+      vm.mapProp(mapObj, dataSrc, "equipmentPrefixSuffix","trailer", "");
+      vm.mapProp(mapObj, dataSrc, "planInstID", "planInstID", "1");
+      vm.mapProp(mapObj, dataSrc, "planDate", "planDate",vm.$filter('date')(new Date(),"yyyy-MM-dd"));
+      vm.mapProp(mapObj, dataSrc.inspectionContext, "planSIC", "inspectionSIC", "");
+      vm.mapProp(mapObj, dataSrc.inspectionContext, "planShiftCd", "shiftCd", "");
+      vm.mapProp(mapObj, dataSrc, "loadDoor","door", "0");
+      return mapObj;
+
+    }
+
+
+  mapManifestDetails(dataSrc) {
+
+      var vm = this;
+      var mapObj = {};
+      mapObj.loadedTrailer = vm.mapLoadedTrailer(dataSrc.loadedTrailer); // Nested Object
+      mapObj.loadedShipments = vm.mapLoadedShipments(dataSrc); // Nested ARRAY
+
+    return mapObj;
+  }
+
+    mapLoadedTrailer(dataSrc){
+
+      var vm = this;
+      var mapObj={};
+
+      vm.mapProp(mapObj, dataSrc, "equipmentPrefixSuffix", "equipmentPrefixSuffix", "");
+      vm.mapProp(mapObj, dataSrc, "trailerStatusCd", "trailerStatusCd", "");
+      vm.mapProp(mapObj, dataSrc, "trailerLoadingStatus", "trailerLoadingStatus", "");
+      vm.mapProp(mapObj, dataSrc, "dockLocation", "dockLocation", "");
+      vm.mapProp(mapObj, dataSrc, "headloadDest", "headloadDest", "N/A");
+      vm.mapProp(mapObj, dataSrc, "headloadLength", "headloadLength", "");
+
+      return mapObj;
+    }
+
+    mapLoadedShipments(dataSrc){
+      var vm = this;
+      var resArray = [];
+
+      if(dataSrc.loadedShipments){
+        angular.forEach(dataSrc.loadedShipments,(val) => {
+          var loadedShm = {};
+
+          vm.mapProp(loadedShm, val, "seq", "seq", "");
+          vm.mapProp(loadedShm, val, "proNbr", "proNbr", "");
+          vm.mapProp(loadedShm, val, "motorizedPiecesCount", "motorizedPiecesCount", "");
+          vm.mapProp(loadedShm, val, "totPiecesCount", "totPiecesCount", "");
+          vm.mapProp(loadedShm, val, "totGrossVolume", "totGrossVolume", "");
+          vm.mapProp(loadedShm, val, "totWeight", "totWeight", "");
+          vm.mapProp(loadedShm, val, "shipperName", "shipperName", "");
+          vm.mapProp(loadedShm, val, "hazmatInd", "hazmatInd", "");
+          vm.mapProp(loadedShm, val, "rateSaverInd", "rateSaverInd", "");
+          vm.mapProp(loadedShm, val, "garntdInd", "garntdInd", "");
+          vm.mapProp(loadedShm, val, "freezableInd", "freezableInd", "");
+          vm.mapProp(loadedShm, val, "foodInd", "foodInd", "");
+          vm.mapProp(loadedShm, val, "poisonInd", "poisonInd", "");
+          vm.mapProp(loadedShm, val, "headloadInd", "headloadInd", "");
+          vm.mapProp(loadedShm, val, "loadToDoor", "loadToDoor", "");
+          vm.mapProp(loadedShm, val, "destSIC", "destSIC", "");
+          vm.mapProp(loadedShm, val, "inspectionStatusCd", "inspectionStatusCd", "NONE");
+
+          resArray.push(loadedShm);
+
+        });
+      }
+
+      return resArray;
+
     }
 
     /** END BACKEND SERVER REQUEST MAPPINGS */

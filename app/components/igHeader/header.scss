@@ -20,26 +20,9 @@ $toolbar-height: 4rem;
   md-menu-bar {
     padding: 0;
     height: 100%;
-
-    md-menu-content {
-      &.md-menu-bar-menu {
-        padding: 1rem 0;
-      }
-
-      md-menu-item {
-        height: 3rem;
-
-        button {
-          text-align: left;
-          padding: 0 1rem;
-          font-size: 1rem;
-          height: 3rem;
-          &:hover {
-            background-color: $xpo-red-hex;
-            color: $body-text-light;
-          }
-        }
-      }
+    .menu-access {
+      color: $body-text-light;
+      background-color: inherit !important;
     }
   }
 
@@ -52,10 +35,30 @@ $toolbar-height: 4rem;
   .toolbar-btn {
     font-size: 1rem;
     cursor: pointer;
-    margin: 0 .4em;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.87);
+    margin-right: .3rem;
+
+    &.refresh-icon {
+      margin: 0;
+    }
   }
 
-  .toolbar-upo {
+
+  @media screen and (max-width: 1280px) {
+    .refresh-text {
+      font-size: .8rem;
+    }
+  }
+
+  .refresh-text{
+    cursor: pointer;
+  }
+
+
+
+  .toolbar-sic {
     background-color: #FFFFFF;
     color: $xpo-red-hex;
     height: 100%;
@@ -63,6 +66,7 @@ $toolbar-height: 4rem;
     margin-left: .55em;
     padding: .5em;
     text-shadow: none;
+    text-align: center;
   }
 
   .toolbar-controls {
@@ -72,6 +76,32 @@ $toolbar-height: 4rem;
   .md-toolbar-tools {
     height: $toolbar-height;
     max-height: $toolbar-height;
+  }
+}
+
+.md-open-menu-container {
+  md-menu-content {
+    &.md-menu-bar-menu {
+      padding: 1rem 0;
+    }
+
+    md-menu-item {
+      height: 3rem;
+
+      button.md-button.md-ink-ripple {
+        text-align: left;
+        padding: 0 1rem;
+        font-size: 1rem;
+        height: 3rem;
+        border: none;
+        background-color: $body-text-light;
+        margin: 0 .2rem;
+        &:hover {
+          background-color: $xpo-red-hex;
+          color: $body-text-light;
+        }
+      }
+    }
   }
 }
 
@@ -137,6 +167,10 @@ $toolbar-height: 4rem;
     md-menu {
       padding: 1.2rem 0;
     }
+
+    .toolbar-sic {
+      width: 8.4rem;
+    }
   }
 }
 
@@ -156,6 +190,10 @@ $toolbar-height: 4rem;
 
     md-menu {
       padding: 0.8rem 0;
+    }
+
+    .toolbar-sic {
+      width: 8.6rem;
     }
   }
 }

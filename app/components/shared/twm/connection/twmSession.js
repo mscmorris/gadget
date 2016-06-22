@@ -1,44 +1,54 @@
-"use strict"
+import twmProducer from './twmProducer.js'
+import twmConsumer from './twmConsumer.js'
+import messageBuilder from './twmMessage.js'
 
-import twmProducer from "./twmProducer.js"
-import twmConsumer from "./twmConsumer.js"
-import messageBuilder from "./twmMessage.js"
+var log = (m) => { console.log(m) };
 
 class twmSession {
-  
-  constructor(connection)
-  {
-    this.session = connection.map((c) => c.createSession(false, Session.AUTO_ACKNOWLEDGE)).take(1).share()
+
+  constructor(connection, logger = log) {
+    this.sessionReference = null;
+    this.logger = logger;
+    this.session = connection.map((c) => this.sessionReference = c.createSession(false, Session.AUTO_ACKNOWLEDGE)).take(1).share()
   }
 
-  createTopic(name)
-  {
-   return this.session.map((s) => s.createTopic(name)).take(1)
+  close(callbackFn) {
+    this.logger("Closing TWM session...");
+    if(this.sessionReference !== null) {
+      this.sessionReference.close(callbackFn);
+    } else if(callbackFn !== undefined && typeof callbackFn == "function") {
+      callbackFn();
+    }
   }
 
-  createQueue(name)
-  {
-    return this.session.map((s) => s.createQueue(name)).take(1)
+  createTopic(name) {
+    return this.session.map((s) => s.createTopic(name)).take(1).catch(this.handleException("createTopic"));
   }
 
-  createProducer(topic)
-  {
-    return twmProducer(this.session, topic)
+  createQueue(name) {
+    return this.session.map((s) => s.createQueue(name)).take(1).catch(this.handleException("createQueue"));
   }
 
-  createConsumer(queue, selector = null)
-  {
-    return twmConsumer(this.session, queue, selector)
+  createProducer(topic) {
+    return new twmProducer(this.session, topic).catch(this.handleException("createProducer"));
   }
 
-  createMessage(payload, properties, destination, replyTo, uuidStrategy, mapFn)
-  {
+  createConsumer(queue, selector = null) {
+    return new twmConsumer(this.session, queue, selector).catch(this.handleException("createConsumer"));
+  }
+
+  createMessage(payload, properties, destination, replyTo, uuidStrategy, mapFn) {
     return this.session.combineLatest(destination, replyTo, (s, d, r) => {
         return messageBuilder(payload, s, properties, d, r, uuidStrategy, mapFn)
       }
-    )
-    .concatAll()
-    .share()
+    ).concatAll().share()
+  }
+
+  handleException(errorSrc) {
+    return (e) => {
+      this.logger.debug(`twmSession exception in ${errorSrc}: ${e.toString()}`);
+      return Rx.Observable.throw(e);
+    }
   }
 }
 

@@ -1,0 +1,12 @@
+@import "app/utils/site_variables.scss";
+
+div.ig-network-dc-container {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  background-color: $xpo-black-hex;
+  color: $body-text-light;
+  padding: .8rem;
+  z-index: 250;
+  border-radius: 2px;
+}

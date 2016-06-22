@@ -1,7 +1,8 @@
 {
   "name": "ig",
   "description": "Inspector Gadget",
-  "version": "0.0.1",
+  "version": "99.99.99",
+  "tag": "patch",
   "homepage": "https://github.com/Con-way/ig.git",
   "license": "UNLICENSED",
   "private": true,

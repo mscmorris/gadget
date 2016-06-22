@@ -1,22 +1,22 @@
 <div layout="row" flex="100">
-  <div class="content-label" flex="5" layout="column" layout-align="end">{{dimItem.seq}}.</div>
+  <div class="content-label seq-num" flex="5" layout="column" layout-align="end">{{dimItem.seq}}.</div>
   <div layout="column" flex="initial" class="content-item">
     <div class="content-label">Pieces</div>
-    <input type="text" class="inp-size-2" ng-model="dimItem.pieceCnt" custom-validation="\d{0,4}"/>
+    <input type="text" class="inp-size-2" ng-model="dimItem.pieceCnt" custom-validation="\d{0,4}" virtual-keyboard-control=""/>
   </div>
   <div class="content-divider" flex="grow">@</div>
   <div layout="column" flex="initial" class="content-item">
     <div class="content-label">Length</div>
-    <input type="text" class="inp-size-4" ng-model="dimItem.inspectorDimensions.length" custom-validation="\d{0,3}"/>
+    <input type="text" class="inp-size-4" ng-model="dimItem.inspectorDimensions.length" custom-validation="\d{0,3}(\.\d{0,1})?" virtual-keyboard-control=""/>
   </div>
   <div class="content-divider" flex="grow">X</div>
   <div layout="column" flex="initial" class="content-item">
     <div class="content-label">Width</div>
-    <input type="text" class="inp-size-4" ng-model="dimItem.inspectorDimensions.width" custom-validation="\d{0,3}"/>
+    <input type="text" class="inp-size-4" ng-model="dimItem.inspectorDimensions.width" custom-validation="\d{0,3}(\.\d{0,1})?" virtual-keyboard-control=""/>
   </div>
   <div class="content-divider" flex="grow">X</div>
   <div layout="column" flex="initial" class="content-item">
     <div class="content-label">Height</div>
-    <input type="text" class="inp-size-4" ng-model="dimItem.inspectorDimensions.height" custom-validation="\d{0,3}"/>
+    <input type="text" class="inp-size-4" ng-model="dimItem.inspectorDimensions.height" custom-validation="\d{0,3}(\.\d{0,1})?" virtual-keyboard-control=""/>
   </div>
 </div>

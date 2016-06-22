@@ -3,28 +3,19 @@ export default ngModule => {
 
   class cameraService {
     /* @ngInject */
-    constructor($http, $window, $log, DMS_END_POINT, igUtils, $q) {
+    constructor($http, $window, $log, igUtils, $q, igLoggerService) {
       this.$http = $http;
       this.$window = $window;
       this._$log = $log;
-      this.dmsEndPoint = DMS_END_POINT; // Example of how to use 'igApp.constants' values
       this.igUtils = igUtils;
+      this.igLoggerService = igLoggerService;
       this.currPhotoID = "";
       this.currPhotoSource = "";
       this.currPhotoOrigin = "";
       this._$q = $q;
-    }
+      this.photoGalleryUpdatedCallback = undefined;
+      this.photoTakenCallback = undefined;
 
-    getPhotoImages() {
-      var s = this; // Avoid naming collisions instead of using 'this'
-      s.$http.get(s.dmsEndPoint)
-        .then(response => {
-          s._$log.debug(providerName + "[getPhotoImages]: Images call complete");
-          return response;
-        },
-          error => {
-          s._$log.error(providerName + "[getPhotoImages]: Images call failed!");
-        });
     }
 
     /**
@@ -106,9 +97,17 @@ export default ngModule => {
 
     updateLocalDmsOpCode(id, code){
       var s =this;
-      if (typeof id != "undefined" && typeof code != "undefined" && (code === "N" || code === "P" || code === "C")){
+      if (typeof id != "undefined" && typeof code != "undefined" && ["N","P","C","S"].includes(code.toUpperCase())){
         if (s.igUtils.isExternalFunc("updateDmsOpCode")) {
           container.updateDmsOpCode(id, code);
+        }
+      }
+    }
+    showPhotoGallery(proNumber, photoId) {
+      var s = this;
+      if (typeof proNumber != "undefined") {
+        if (s.igUtils.isExternalFunc("showPhotoGallery")) {
+          container.showPhotoGallery(proNumber, photoId);
         }
       }
     }
@@ -127,10 +126,8 @@ export default ngModule => {
       var promise = defer.promise;
       if (s.igUtils.isExternalFunc("listPhotos") && typeof proNum != "undefined"){
         s._$log.debug("Making Call");
-        container.listPhotos(proNum, function(value) {
+        container.listPhotos(proNum, false, function(value) {
           s._$log.debug("Returned!");
-          s._$log.debug(value);
-
           if (value == ""){
             defer.reject();
           }else {
@@ -144,6 +141,47 @@ export default ngModule => {
       return promise;
     }
 
+    listPhotosNotSentToDms(){
+      var s =this;
+      var defer = s._$q.defer();
+      var promise = defer.promise;
+      if (s.igUtils.isExternalFunc("listPhotosNotSentToDms")){
+        s._$log.debug("Making Call");
+        container.listPhotosNotSentToDms(function(value) {
+          s._$log.debug("Returned!");
+          if (value === ""){
+            defer.reject();
+          }else {
+            defer.resolve(angular.fromJson(value));
+          }
+        });
+      } else {
+        s._$log.error("Call to ListPhotosNotSentToDms was rejected!");
+        defer.reject();
+      }
+      return promise;
+    }
+    getPendingPhotoCount(){
+      var s =this;
+      var defer = s._$q.defer();
+      var promise = defer.promise;
+      if (s.igUtils.isExternalFunc("getPendingPhotoCount")){
+        s._$log.debug("Making Call");
+        container.getPendingPhotoCount(function(value) {
+          s._$log.debug("Returned!");
+          if (value === ""){
+            defer.reject(0);
+          }else {
+            defer.resolve(angular.fromJson(value));
+          }
+        });
+      } else {
+        s._$log.error("Call to ListPhotosNotSentToDms was rejected!");
+        defer.reject(0);
+      }
+      return promise;
+    }
+
     listLocalThumbnails(proNum) {
       var s =this;
       var defer = s._$q.defer();
@@ -152,7 +190,6 @@ export default ngModule => {
         s._$log.debug("Making call to listThumbs");
         container.listThumbs(proNum, function(value) {
           s._$log.debug("Returned!");
-          s._$log.debug(value);
 
           if (value == ""){
             defer.reject();
@@ -175,7 +212,7 @@ export default ngModule => {
     {
       var s = this;
       if (s.igUtils.isExternalFunc("insertPhoto")) {
-        s.igUtils.logToContainer("Inserting Manually Uploaded Photos for a PRO number: " + proNum, "Debug");
+        s.igLoggerService.logMessage("Inserting Manually Uploaded Photos for a PRO number: " + proNum, s.igLoggerService.DebugLogLevel);
         s._$log.debug("Inserting Manually Uploaded Photos for a PRO number: " + proNum);
         container.insertPhoto(proNum, images);
       } else {
@@ -186,49 +223,96 @@ export default ngModule => {
 
     }
 
-    registerPhotoTakenListener(){
-      var defer = this._$q.defer();
-      var promise = defer.promise;
-
+    /**
+     * Requests a photo record from SQLite by accessing the container app and returns the record in JSON format as a promise
+     * Returns 'undefined' if no record was found.
+     * @param photoId - The identifier associated with the photo record
+     */
+    getPhoto(photoId) {
       var s = this;
+      var defer = s._$q.defer();
+      var promise = defer.promise;
+      if (s.igUtils.isExternalFunc("getPhoto") && angular.isDefined(photoId)){
+        container.getPhoto(photoId, true, function(value) {
+          if(angular.isUndefined(value) || value === null){
+            defer.reject(undefined);
+          }else {
+            defer.resolve(angular.fromJson(value));
+          }
+        });
+      } else {
+        s._$log.error("Call to getPhoto was rejected!");
+        defer.reject(undefined);
+      }
+      return promise;
+    }
+
+    registerPhotoGalleryUpdateListener(callback){
+      var s = this;
+      s.photoGalleryUpdateCallback = callback;
+      if (s.igUtils.isExternalFunc("registerPhotoGalleryUpdatedListener")) {
+        container.registerPhotoGalleryUpdatedListener(()=>{
+          if (s.photoGalleryUpdateCallback != undefined){
+            var defer = this._$q.defer();
+            var promise = defer.promise;
+            promise.then(()=>{
+              s.photoGalleryUpdateCallback();
+            });
+            defer.resolve();
+          }
+        });
+      }
+    }
+    registerPhotoTakenListener(callback){
+      var s = this;
+
+      s.photoTakenCallback = callback;
       if (s.igUtils.isExternalFunc("registerPhotoTakenListener")) {
+        var defer = this._$q.defer();
+        var promise = defer.promise;
         container.registerPhotoTakenListener((photoJson)=>{
-          defer.resolve(angular.fromJson(photoJson));
+          if (s.photoTakenCallback != undefined){
+            promise.then(()=>{
+              s.photoTakenCallback(angular.fromJson(photoJson));
+            });
+            defer.resolve();
+          }
         });
-      }else{
-        defer.reject();
       }
-      return promise;
+
     }
 
-    registerPreviewPhotoListener(){
-      var defer = this._$q.defer();
-      var promise = defer.promise;
+    /**
+      Not being used right now
+     */
+    //registerPreviewPhotoListener(callback){
+    //  var s = this;
+    //
+    //  s.photoPreviewCallback = callback;
+    //  if (s.igUtils.isExternalFunc("registerPreviewPhotoListener")) {
+    //    var defer = s._$q.defer();
+    //    var promise = defer.promise;
+    //    container.registerPreviewPhotoListener((photoJson)=>{
+    //      if (s.photoPreviewCallback != undefined){
+    //        promise.then(()=>{
+    //          s.photoPreviewCallback(angular.fromJson(photoJson));
+    //        });
+    //        defer.resolve();
+    //      }
+    //    });
+    //  }
+    //}
 
+    registerPendingPhotosListener(callback){
       var s = this;
-      if (s.igUtils.isExternalFunc("registerPreviewPhotoListener")) {
-        container.registerPreviewPhotoListener((photoJson)=>{
-          defer.resolve(angular.fromJson(photoJson));
-        });
-      }else{
-        defer.reject();
-      }
-      return promise;
-    }
-
-    registerPendingPhotosListener(){
-      var defer = this._$q.defer();
-      var promise = defer.promise;
-
-      var s = this;
+      s.pendingPhotosListener = callback;
       if (s.igUtils.isExternalFunc("registerPendingPhotosListener")) {
         container.registerPendingPhotosListener((photoJson)=>{
-          defer.resolve(angular.fromJson(photoJson));
+          if (s.pendingPhotosListener != undefined){
+            s.pendingPhotosListener(angular.fromJson(photoJson));
+          }
         });
-      }else{
-        defer.reject("container not available");
       }
-      return promise;
     }
   }
   ngModule.service(providerName, cameraService);

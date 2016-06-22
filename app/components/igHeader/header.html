@@ -1,4 +1,4 @@
-<div class="ig-header-wrapper">
+<div class="ig-header-wrapper" id="ig-header">
   <md-toolbar ng-class="igH.headerClassList" md-scroll-shrink>
     <div class="md-toolbar-tools">
       <!-- Back Button icon for navigating backwards through previous states -->
@@ -11,11 +11,12 @@
       <span class="toolbar-text">{{title}}</span>
       <span flex="{{flexVal}}"></span>
       <div layout="row" layout-align="end center" class="toolbar-controls" ng-transclude flex></div>
-      <div class="toolbar-upo toolbar-btn" layout="column" layout-align="center" ng-click="igH.showSicChanger()">
+      <div class="toolbar-sic toolbar-btn" layout="column" layout-align="center" ng-click="igH.showSicChanger()" ng-show="showsic">
         <div>
-          {{igH.inspectionContext.shiftCd + "  " + igH.inspectionContext.inspectionSIC}}
+          {{igH.inspectionContext.shiftCd | shiftCd}} {{igH.inspectionContext.inspectionSIC}}
         </div>
       </div>
     </div>
   </md-toolbar>
+  <div ig-notify-on-load="toast"></div>
 </div>

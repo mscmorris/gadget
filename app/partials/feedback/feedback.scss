@@ -1,0 +1,32 @@
+#feedback {
+  padding: 0 1rem;
+
+  > div {
+    padding: 1rem;
+  }
+  #category{
+    width: 14rem;
+    padding: .5rem;
+    border: {
+      top: 1px;
+      left: 1px;
+      bottom: 1px;
+      right: 1px;
+      style: solid;
+      color: black;
+    }
+    .md-select-value {
+      border-width: 0px;
+    }
+  }
+  button:first-child {
+    margin-right: 1rem;
+  }
+  span.md-select-icon{
+    color:$xpo-red-hex;
+  }
+  #sendFeedback{
+    padding-right:5rem;
+    padding-left:5rem;
+  }
+}

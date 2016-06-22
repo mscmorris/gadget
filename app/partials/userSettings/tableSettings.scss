@@ -1,6 +1,17 @@
+#resetpreferences{
+  padding-right: 5rem;
+  padding-left: 5rem;
+  margin: 0 2rem 2rem 2rem;
 
+}
 .settings-content {
   padding: 0 2rem 2rem 2rem;
+}
+.settings-title{
+    font-family: $font-base-family;
+    font-style: normal;
+  font-size:1.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Table Settings Menu styles */
@@ -17,10 +28,6 @@
     cursor: default;
   }
 
-  .action-btn {
-    background-color: $body-text-light;
-    text-align: center;
-  }
 }
 
 .t-settings-inspection {
@@ -34,6 +41,7 @@
     svg {
       fill: $body-text-light !important;
     }
+
   }
 
   .slip-list .radio-contain svg {
@@ -56,13 +64,21 @@
     color: $xpo-black-hex;
     background-color: #FFFFFF;
     border-bottom: thin solid $xposupp-grey2-hex;
-
+    md-icon{
+      margin-right: 1rem;
+    }
     .scrubber svg {
       fill: $xpo-black-hex;
       width: 1.5rem;
       height: 1.5rem;
     }
-
+    .adjust-padding{
+      padding-bottom: .75rem !important;
+    }
+    .title{
+      padding-left: 1rem;
+      vertical-align: middle;
+    }
     .arrow-contain {
       height: 3rem;
       padding: 0 .5rem;

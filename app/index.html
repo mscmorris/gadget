@@ -32,97 +32,20 @@
 
   <!--trying to get base href to be dynamic for the war deployment-->
   <script>
+    var version = "Unknown";
+    getAppVersion = function(){
+      return version;
+    }
     document.write('<base href="' + document.location + '" />');
   </script>
   <!--base href="/" /-->
 </head>
 <body ng-app="igApp" class="ng-scope ng-binding"  layout="column">
+    <ig-network-disconnected></ig-network-disconnected>
     <div layout="row" flex>
-        <!-- todo:might want to change the sidenav to a directive that way it has a scope of it's own that doesn't get destroyed when ui router changes the view -->
-       <div ng-controller="sideNavController as nav">
-      <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2 nav-drawer nav-text" md-component-id="nav" md-is-open="true">
-          <md-item md-no-ink>
-              <a ui-sref="list">
-                <div layout="row">
-                  <div flex="5" class="nav-drawer-li-blue"></div>
-                  <md-item-content flex md-ink-ripple>
-                    <div flex="80" class="inset">Planning</div>
-                  </md-item-content>
-                </div>
-                </a>
-            </md-item>
-            <md-item md-no-ink>
-              <a ui-sref="list">
-                <div layout="row">
-                  <div flex="5" class="nav-drawer-li-red"></div>
-                  <md-item-content flex md-ink-ripple>
-                    <div flex="80" class="inset">Inspection</div>
-                  </md-item-content>
-                </div>
-                </a>
-            </md-item>
-            <md-item md-no-ink>
-              <a ui-sref="list">
-                <div layout="row">
-                  <div flex="5" class="nav-drawer-li-yellow"></div>
-                  <md-item-content flex md-ink-ripple>
-                    <div flex="80" class="inset">Corrections</div>
-                  </md-item-content>
-                </div>
-                </a>
-            </md-item>
-            <md-divider class="nav-draw-divide"></md-divider>
-            <md-item>
-              <a ui-sref="lookup">
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                  <md-button class="ig-icon-button md-icon">
-                    <md-icon md-svg-src="images/wni_drawer-search-2x.svg" class="ig-icon-button" aria-label="Add PROs"></md-icon>
-                  </md-button>
-                  <div class="inset" layout="row">
-                    <div layout="column" layout-align="center">
-                      <span>Find:</span>
-                    </div>
-                    <span flex="5"></span>
-                    <div class="nav-text-sm" layout="column" layout-align="center">
-                      <span>PRO Number</span>
-                      <span>Trailer Manifest</span>
-                    </div>
-                  </div>
-                </md-item-content>
-              </a>
-            </md-item>
-            <md-item>
-              <a ng-click="nav.add($event)">
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                  <md-button class="ig-icon-button md-icon">
-                    <md-icon md-svg-src="images/wni_drawer-addmulti-2x.svg" class="ig-icon-button" aria-label="Add PROs"></md-icon>
-                  </md-button>
-                  <div class="inset">Add PROs</div>
-                </md-item-content>
-              </a>
-            </md-item>
-            <md-item>
-              <a ui-sref="tableSettings">
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                  <md-button class="ig-icon-button md-icon">
-                    <md-icon md-svg-src="images/wni_control-tablecontrol-2x.svg" class="ig-icon-button" aria-label="Column Settings"></md-icon>
-                  </md-button>
-                  <div class="inset">Column Settings</div>
-                </md-item-content>
-              </a>
-            </md-item>
-            <md-item ng-click="close()">
-              <a>
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                  <md-button class="ig-icon-button md-icon">
-                    CLOSE
-                  </md-button>
-                </md-item-content>
-              </a>
-            </md-item>
-          </md-list>
-
-        </md-sidenav>
+      <!-- todo:might want to change the sidenav to a directive that way it has a scope of it's own that doesn't get destroyed when ui router changes the view -->
+      <div ng-controller="sideNavController as nav">
+        <div ng-include="'partials/nav/sidenav.html'"></div>
       </div>
       <div id="master-page" layout="column" flex>
         <div ui-view></div>
@@ -133,22 +56,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdcxpd0575.con-way.com:8001/demo/jms/javascript/WebSocket.js"></script>
     <script src="http://cdcxpd0575.con-way.com:8001/demo/jms/javascript/JmsClient.js"></script>
-    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.map"></script-->
     <!-- build:js(.) vendor.js -->
-    <!--script src="node_modules/angular-datatables/node_modules/jquery/dist/jquery.js"></script-->
     <script src="node_modules/angular-datatables/node_modules/datatables/media/js/jquery.dataTables.js"></script>
     <script src="app/scripts/dataTables/dataTables.colReorder.js"></script>
-    <script src="app/scripts/dataTables/dataTables.colVis.js"></script>
     <script src="app/scripts/dataTables/dataTables.colVis.js"></script>
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-datatables/dist/angular-datatables.js"></script>
     <script src="node_modules/angular-datatables/dist/plugins/colreorder/angular-datatables.colreorder.js"></script>
     <script src="node_modules/angular-datatables/dist/plugins/colvis/angular-datatables.colvis.js"></script>
-    <!--<script src="app/scripts/twm/WebSocket.js"></script>-->
-    <!--<script src="app/scripts/twm/JmsClient.js"></script>-->
     <!-- endbuild -->
-
     <script src="app.js"></script>
+
 
     <script src="http://localhost:35729/livereload.js?snipver=1"></script>
 

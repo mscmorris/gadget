@@ -1,5 +1,5 @@
-import { shipments } from "./shipments";
 
+var moment = require('moment-timezone');
 var _ = require('lodash');
 
 export default ngModule => {
@@ -8,8 +8,9 @@ export default ngModule => {
 
   class inspectionListController {
     /*@ngInject*/
-    constructor($rootScope,$scope, $log,$state, $timeout,$resource,$window, $q, igUtils, inspectionService,
-                userService, DTOptionsBuilder, DTColumnBuilder,persistenceService,mappingService)
+    constructor($rootScope,$scope, $log,$state, $stateParams, $timeout,$resource,$window, $q, $filter,igUtils, inspectionService,
+                DTOptionsBuilder, DTColumnBuilder,persistenceService,mappingService,conditioningService, CODE_CONSTANTS,
+                shipmentActionService)
     {
       // Constructor specific variables
       var vm = this;
@@ -21,13 +22,15 @@ export default ngModule => {
       vm.$state = $state;
       vm.$timeout = $timeout;
       vm.$resource = $resource;
+      vm.$filter = $filter;
       vm.inspectionService=inspectionService;
       vm.persistenceService=persistenceService;
+      vm._CODE_CONSTANTS = CODE_CONSTANTS;
+      vm._shipmentActionService = shipmentActionService;
       vm.inspectionContext = vm.inspectionService.getInspectionContext();
       vm.insRefreshTimeStmp =vm.inspectionService.getRefreshTimeStmp();
       vm.DTOptionsBuilder = DTOptionsBuilder;
       vm.DTColumnBuilder = DTColumnBuilder;
-      vm.shipments = shipments;
       vm.inspectionShipments = vm.inspectionShipmentsList();
       vm.selectedShipments = [];
       vm.listCount="0";
@@ -35,21 +38,23 @@ export default ngModule => {
       vm.dtOptions = {};
       vm.$q=$q;
       vm.mappingService = mappingService;
-      //vm.dtColumns = persistenceService.find(COL_PREF_TITLE);
-      //persistenceService.find(COL_PREF_TITLE).then((data) => {
-      //  vm.slipListItems = vm.getColumnSettingsList(angular.fromJson(data));
-      //});
-      vm.dtColumns = igUtils.getPreference("I-dtColumnsPref").then((value) => {
+      vm.conditioningService = conditioningService;
+      vm.defaultSortIndex = 0;
+
+      vm.inspectionService.setCurrentInspection(undefined);
+      vm.inspectionService.setCurrentShipment(undefined);
+
+
+      vm.dtColumns = igUtils.getPreference(vm._CODE_CONSTANTS.PREFERENCES.LIST_I).then((value) => {
           var defer = $q.defer();
           defer.resolve(vm.getDefaultListCols(angular.fromJson(value)));
           return defer.promise;
       },
       (error) => {
-        return vm.$resource('data/dtColumns.json').query().$promise.then(function(d) {
+        return vm.$resource('data/inspectionColumns.json').query().$promise.then(function(d) {
           return vm.getDefaultListCols(d);
         });
       });
-
 
       vm.toggleVis = function(idx, visible) {
         var vm = this;
@@ -71,6 +76,27 @@ export default ngModule => {
         vm.reloadData();
       });
 
+      /* reload table for new display orientation */
+      angular.element($window).bind('orientationchange resize', (e) => {
+        if(vm.dtInstance && vm.dtInstance.DataTable) {
+          $timeout(() => {
+            vm.reloadData();
+          }, 50);
+        }
+      });
+
+      vm.$scope.$on('$destroy', (e) => {
+        angular.element($window).off('orientationchange resize');
+      });
+
+      /**
+       * Destroys the datatable on state change to prevent memory leaks
+       */
+      this.$state.current.onExit = () => {
+        if(vm.dtInstance != undefined) {
+          vm.dtInstance.DataTable.destroy();
+        }
+      };
       vm.dtOptions = vm.loadData();
 
     } //end constructor
@@ -97,7 +123,6 @@ export default ngModule => {
           if(angular.element(row).hasClass("row-selected")) {
             $(row).toggleClass("row-selected");
           }
-
         }, 100, false);
       });
       vm.selectedShipments=[];
@@ -105,6 +130,7 @@ export default ngModule => {
 
     loadData() {
       var vm = this;
+      vm.insRefreshTimeStmp = vm.inspectionService.setRefreshTimeStmp("Inspection");
       return vm.DTOptionsBuilder
         .fromFnPromise(function () {
           return vm.inspectionShipments;
@@ -115,7 +141,11 @@ export default ngModule => {
         .withOption('fixedHeader', true)
         .withOption('autoWidth', true)
         .withOption('rowCallback', function (nRow, aData) {
-          vm._$log.debug("In rowCallback");
+
+          var isUrgent = aData.location.match(/^[1-4]{1}/)
+          if(isUrgent !== null) {
+            $(nRow).addClass("urgent")
+          }
           // Unbind first in order to avoid any duplicate handler (see https://github.com/l-lin/angular-datatables/issues/87)
           //open details on double
           $(nRow).unbind('dblclick');
@@ -133,6 +163,9 @@ export default ngModule => {
             });
           });
 
+        })
+        .withOption('initComplete', function() {
+          angular.element(".ig-data-table").DataTable().order([vm.defaultSortIndex, "asc"]).draw();
         })
         .withColVis()
         .withColVisStateChange(function (iColumn, bVisible) {
@@ -157,13 +190,14 @@ export default ngModule => {
 
     reloadData() {
       var vm = this;
-      vm.dtInstance.reloadData(vm.inspectionShipments);
+      vm.insRefreshTimeStmp = vm.inspectionService.setRefreshTimeStmp("Inspection");
+      vm.dtInstance.reloadData();
     }
 
     loadDefaultColPrefs() {
       var vm = this;
-      vm.dtColumns = vm.$resource('data/dtColumns.json').query().$promise;
-      vm.$resource('data/dtColumns.json').query().$promise.then(function(d) {
+      vm.dtColumns = vm.$resource('data/inspectionColumns.json').query().$promise;
+      vm.$resource('data/inspectionColumns.json').query().$promise.then(function(d) {
         vm.slipListItems = vm.getDefaultListCols(d);
       });
     }
@@ -172,27 +206,26 @@ export default ngModule => {
     {
       var vm = this;
       vm._$log.debug("Opening shipment details");
-      vm.inspectionService.setCurrInspection(aData);
-      vm.$state.go('shipmentDetails');
+      vm.$state.go('shipmentDetails',{proNbr : aData.proNbr});
     }
 
     inspectionShipmentsList() {
       var vm = this;
       var insShmList=[];
+      vm.listCount = 0;
       return vm.persistenceService.find("PRO")
         .then(response=>{
           if(!response) {
             return vm.inspectionService.listInspectionShipments(vm.inspectionContext)
               .then(response => {
                 vm._$log.debug(controllerName + "[inspectionShipmentsList]: LISTINSPECTIONSHIPMENTS call complete!");
-                vm.insRefreshTimeStmp = vm.inspectionService.setRefreshTimeStmp("Inspection");
                 if(response.data.inspectionShipment)
                 {
                   insShmList = response.data.inspectionShipment;
                   vm.listCount = insShmList.length;
                   var idbProList = [];
                   angular.forEach(insShmList, (insShm, index) => {
-                    idbProList.push(insShm.proNbr);
+                    idbProList.push(vm.conditioningService.condition(insShm.proNbr));
                   });
                   vm.persistenceService.insert("PRO", idbProList);
 
@@ -205,7 +238,9 @@ export default ngModule => {
                 return vm.inspectionShipments;
 
               }, error => {
-                vm.$rootScope.toast("System error. Please contact support.", 5);
+                if(error.status !== vm._CODE_CONSTANTS.NO_NETWORK_CONN) {
+                  vm.$rootScope.toast(error.data.message, 5);
+                }
                 vm._$log.error(controllerName + "[inspectionShipmentsList]: LISTINSPECTIONSHIPMENTS call failed!");
                 return [];
               });
@@ -244,18 +279,24 @@ export default ngModule => {
       var vm = this;
       return vm.persistenceService.find("PRO")
       .then(response=>{
-          return vm.inspectionService.listInspectionShipmentsForShiftChange(response)
-        .then(response => {
-          vm._$log.debug(controllerName + "[enrichInspectionShipmentsList]: call complete!");
-          vm.listCount = response.data.inspectionShipment.length;
-          return vm.transInspectionShipmentsList(response.data.inspectionShipment);
-
-        }, error => {
-          vm.$rootScope.toast("System error. Please contact support.", 5);
-          vm._$log.error(controllerName + "[enrichInspectionShipmentsList]: call failed!");
-        });
+        if(response) {
+          return vm.inspectionService.listInspectionShipments(response)
+            .then(response => {
+              vm._$log.debug(controllerName + "[enrichInspectionShipmentsList]: call complete!");
+              vm.listCount = (response.data.inspectionShipment) ? response.data.inspectionShipment.length : 0;
+              return vm.transInspectionShipmentsList(response.data.inspectionShipment);
+            }, error => {
+              if(error.status !== vm._CODE_CONSTANTS.NO_NETWORK_CONN) {
+                vm.$rootScope.toast(error.data.message, 5);
+              }
+              vm._$log.error(controllerName + "[enrichInspectionShipmentsList]: call failed!");
+              return [];
+            });
+        }
+        else {
+          return [];
+        }
       },error=>{vm._$log.error(controllerName + "FAILED to getDataByKey from persistenceService");});
-
     }
 
     refreshInspectionShipmentsList() {
@@ -265,38 +306,35 @@ export default ngModule => {
         .then(response=>{
           vm.inspectionShipments= vm.inspectionShipmentsList();
           vm.reloadData();
+          vm.$rootScope.toast(`Inspection list updated`, 2);
         },error=>{vm._$log.error(controllerName + "FAILED to Delete row from IndexDB");});
 
     }
 
     setInspectionStatus(status, notifyMsg) {
       var vm = this;
-      var selProNbrs = [];
-      var req = {};
-      angular.forEach(vm.selectedShipments,(shm,idx)=>{selProNbrs.push(shm.proNbr)});
-      req["inspectionContext"]=vm.inspectionContext;
-      req["actionCd"]=status;
-      req["alertProNbr"]=selProNbrs;
-      vm.selectedShipments=[];
-      return vm.inspectionService.setInspectionStatus(req)
-      .then(response=>{
-          if(typeof notifyMsg !== 'undefined' && notifyMsg !== "") {
-            this.$rootScope.toast(notifyMsg, 5);
-          }
-          vm.persistenceService.find("PRO")
-          .then (response => {
-            var persistedPros = response;
-            angular.forEach(selProNbrs,(pro,idx)=>
-            {
-              if(persistedPros.indexOf(pro)!= -1)
-              {
-                persistedPros.splice(persistedPros.indexOf(pro),1);
-              }
-            });
-            vm.reloadListOnStatusChange(persistedPros);
-          });
-      },error=>{vm.$log.error(controllerName + "[setInspectionStatus]: SETINSPECTIONSTATUS call failed!");});
-
+      if(vm.selectedShipments && vm.selectedShipments.length > 0) {
+        var selProNbrs = [];
+        angular.forEach(vm.selectedShipments,(shm,idx)=>{selProNbrs.push(shm.proNbr)});
+        vm.selectedShipments=[];
+        return vm._shipmentActionService.setInspectionStatus(status, notifyMsg, selProNbrs)
+          .then(response=>{
+            vm.persistenceService.find("PRO")
+              .then (response => {
+                var persistedPros = response;
+                angular.forEach(selProNbrs,(pro,idx)=>
+                {
+                  if(persistedPros.indexOf(pro)!= -1)
+                  {
+                    persistedPros.splice(persistedPros.indexOf(pro),1);
+                  }
+                });
+                vm.reloadListOnStatusChange(persistedPros);
+              });
+          },error=>{vm.$log.error(controllerName + "[setInspectionStatus]: SETINSPECTIONSTATUS call failed!");});
+      } else {
+        vm.$rootScope.toast(`No shipments are selected.`, 2);
+      }
     }
 
     reloadListOnStatusChange(persistedPros) {
@@ -388,7 +426,10 @@ export default ngModule => {
     getDefaultListCols(cols) {
       //_.pluck(cols, 'title'
       var list = [];
-      cols.forEach(function (e, i, a) {
+      cols.forEach((e, i, a) => {
+        if(e.data == "location") {
+          this.defaultSortIndex = i;
+        }
         list.push({"title" : e.title, "data" : e.data, "visible" : e.visible !== undefined ? e.visible : true, "idx" : i, "reorder" : false});
       });
       return list;
@@ -397,15 +438,30 @@ export default ngModule => {
     transInspectionShipmentsList(inspectionShipmentList){
       var vm = this;
       var transInspectionShipmentsList = [];
+      var iStatusFilter = this.$filter('friendlyStatusCd');
+      var proFilter = this.$filter('friendlyProNumber');
       angular.forEach(inspectionShipmentList,(inspection,idx)=> {
         if(typeof inspection["inspectionStatusCd"] !== 'undefined' && inspection["inspectionStatusCd"]!== null && inspection["inspectionStatusCd"]!== ""){
-          inspection["inspectionStatusCd"] = vm.mappingService.transInspCodeToStatus(inspection["inspectionStatusCd"]);
+          inspection["inspectionStatusCd"] = iStatusFilter(inspection["inspectionStatusCd"]);
+          inspection["proNbr"] = proFilter(inspection["proNbr"]);
+          if(inspection["eta"] !== undefined && inspection["eta"] !== "") {
+            /* Always use Pacific TZ because the server side is already applying the hours offset based on SIC location and the timestamp was stored using PST/PDT */
+            inspection["eta"] = moment.tz(inspection["eta"], 'US/Pacific').format("MM/DD/YY HH:mm");
+          }
           transInspectionShipmentsList.push(vm.mappingService.mapInspectionShipments(inspection));
         }
       });
       return transInspectionShipmentsList;
     }
 
+    showActionMenu($mdOpenMenu){
+      var vm  =this;
+      if(vm.selectedShipments.length>0){
+        $mdOpenMenu.call();
+      }else{
+        vm.$rootScope.toast(`No shipments are selected.`, 2);
+      }
+    }
   }
 
   ngModule.controller(controllerName, inspectionListController);

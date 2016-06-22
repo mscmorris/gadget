@@ -4,7 +4,7 @@ export default ngModule => {
   class dialogController {
     /*@ngInject*/
     constructor($rootScope, $scope, $state, $log, $mdDialog, $window, igUtils, dialogTitle, dialogContent,
-      dialogConfirmTxt, dialogCancelTxt) {
+      dialogConfirmTxt, dialogCancelTxt,navigationService) {
       var vm = this;
       // Angular Module Deps
       this._$rootScope = $rootScope;
@@ -18,10 +18,18 @@ export default ngModule => {
       this._dialogContent = dialogContent;
       this._dialogConfirmTxt = dialogConfirmTxt;
       this._dialogCancelTxt = dialogCancelTxt;
+      this.navigationService = navigationService;
     }
 
     cancelDialog() {
       this._$mdDialog.cancel();
+    }
+
+    cancelLoading(){
+      var s = this;
+      s._$log.debug(`${controllerName}: Cancelling Loading dialog...`);
+      s._$mdDialog.cancel();
+      s.navigationService.prevState();
     }
 
     hideDialog() {

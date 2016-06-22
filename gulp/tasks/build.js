@@ -91,7 +91,7 @@ gulp.task('clean:finish', false, function (done) {
 });
 
 gulp.task('copy:dist', false, function () {
-  var main = gulp.src(['server/**/*', 'package.json'], { base: './' });
+  var main = gulp.src(['server/**/*'], { base: './' });
   var images = gulp.src('app/images/**/*', { base: './' });
   var views = gulp.src('app/partials/**/*', { base: './' });
   var componentUIs = gulp.src('app/components/**/*.html', { base: './' });
@@ -104,13 +104,11 @@ gulp.task('copy:dist', false, function () {
 gulp.task('constants', false, function () {
   var environment = argv.env || 'development';
   var myConfig = require('./config/constantsConfig');
-  var envConfig = myConfig[environment];
-  var envIndependent = myConfig["env_independent"];
+  myConfig.ENVIRONMENT = environment;
 
-  var mergedConstants = extend({}, envConfig, envIndependent);
   return ngConstant({
       name: "igApp.constants",
-      constants: mergedConstants,
+      constants: myConfig,
       wrap: "commonjs",
       stream: true
     })

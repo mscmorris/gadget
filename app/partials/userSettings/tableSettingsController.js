@@ -17,7 +17,7 @@ export default ngModule => {
           this._columnList = this.buildColumnList(angular.fromJson(value));
         },
         (error) => {
-          $resource('data/dtColumns.json').query().$promise.then((d) => {
+          $resource('data/inspectionColumns.json').query().$promise.then((d) => {
             this._columnList = this.buildColumnList(d);
           });
         });
@@ -36,6 +36,8 @@ export default ngModule => {
             vm._$log.debug(controllerName + "[onExit]: external function SetPreference not found. Column Settings were not saved.");
           }
         );
+
+        vm.doCleanup();
       };
     }
 
@@ -45,7 +47,7 @@ export default ngModule => {
           this._columnList = this.buildColumnList(angular.fromJson(value));
         },
         (error) => {
-          this._$resource('data/dtColumns.json').query().$promise.then((d) => {
+          this._$resource('data/inspectionColumns.json').query().$promise.then((d) => {
             this._columnList = this.buildColumnList(d);
           });
         });
@@ -56,7 +58,7 @@ export default ngModule => {
       //_.pluck(cols, 'title'
       var list = [];
       cols.forEach(function (e, i, a) {
-        list.push({"title" : e.title, "data" : e.data, "visible" : e.visible !== undefined ? e.visible : true, "idx" : i, "reorder" : false});
+        list.push({"title" : e.title, "description" : e.description, "data" : e.data, "visible" : e.visible !== undefined ? e.visible : true, "idx" : i, "reorder" : false});
       });
       return list;
     }
@@ -121,6 +123,14 @@ export default ngModule => {
       vm._columnList.splice(spliceIndex, 0, listItem);
     }
     //</editor-fold>
+
+    doCleanup() {
+      var listItems = angular.element(".slip-list");
+      angular.forEach(listItems, (val) => {
+        angular.element(val).off();
+        angular.element(val).find("li").off();
+      });
+    }
 
   }
 

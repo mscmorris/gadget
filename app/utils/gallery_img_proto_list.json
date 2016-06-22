@@ -1,38 +1,38 @@
 {
   "pic1" : {
     "id" : 1,
-    "filename" : "test_image1.png",
+    "filename" : "WRFO",
     "filesrc" :"images/wni_thumb-loading-3x.svg",
     "opCode": "N"
   },
   "pic2" : {
     "id" : 2,
-    "filename" : "test_image2.png",
+    "filename" : "WRFO",
     "filesrc" :"images/wni_thumb-loading-3x.svg",
     "opCode": "N"
   },
   "pic3" : {
     "id" : 3,
-    "filename" : "test_image3.png",
+    "filename" : "WRFO",
     "filesrc" :"images/wni_thumb-loading-3x.svg",
     "opCode": "P"
   },
   "pic4" : {
     "id" : 4,
-    "filename" : "test_image4.png",
+    "filename" : "WRFO",
     "filesrc" :"images/wni_thumb-loading-3x.svg",
     "opCode": "C"
   },
   "pic5" : {
     "id" : 5,
-    "filename" : "test_image5.png",
+    "filename" : "WRFO",
     "filesrc" :"images/wni_thumb-loading-3x.svg",
     "opCode": "C"
   },
   "pic6" : {
     "id" : 6,
-    "filename" : "test_image5.png",
-    "filesrc" :"images/wni_thumb-loading-3x.svg",
+    "filename" : "WRFO",
+    "filesrc" :"images/testGoogle.png",
     "opCode": "C"
   }
 }

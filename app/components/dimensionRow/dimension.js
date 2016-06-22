@@ -14,10 +14,9 @@ export default ngModule => {
   /* @ngInject */
   function link(scope, element, attrs, controller) {
     var rowInputs = $(element).find("input[type='text']");
-    angular.forEach(rowInputs, (val, idx) => {
-      $(val).on("blur", () => {
-        scope.updateFn();
-      });
+    rowInputs.on("blur keyup", () => {
+      scope.updateFn();
     });
+    scope.$on("$destroy", () => rowInputs.off("blur keyup"));
   }
 };

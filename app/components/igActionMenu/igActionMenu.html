@@ -1,0 +1,29 @@
+
+<md-menu md-offset="0 65">
+  <button layout="row" layout-align="start center" class="toolbar-btn" ng-click="igAction.showActionMenu($mdOpenMenu)">
+    <md-icon md-svg-src="images/wni_control-action-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
+    <span>Action</span>
+  </button>
+  <md-menu-content>
+    <md-menu-item ng-if="igAction.displayActionMenuItem('mvDismiss')">
+      <md-button ng-click="igAction.setInspectionStatus('X', 'Shipment dismissed.')">
+        Dismiss
+      </md-button>
+    </md-menu-item>
+    <md-menu-item ng-if="igAction.displayActionMenuItem('mvInspNtCrcted')">
+      <md-button ng-click="igAction.setInspectionStatus('N', 'Shipment marked as Inspected Not Corrected.')">
+        Mark inspected and not corrected
+      </md-button>
+    </md-menu-item>
+    <md-menu-item ng-if="igAction.displayActionMenuItem('mvPlanList')">
+      <md-button ng-click="igAction.setInspectionStatus('Y', 'Shipment moved to Planning List.')">
+        Move to planning list
+      </md-button>
+    </md-menu-item>
+    <md-menu-item ng-if="igAction.displayActionMenuItem('mvInsList')">
+      <md-button ng-click="igAction.setInspectionStatus('R', 'Shipment moved to Inspection List.')">
+        Move to inspection list
+      </md-button>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>
