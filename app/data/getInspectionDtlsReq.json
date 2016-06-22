@@ -1,0 +1,12 @@
+{
+  "shipmentInstID": "12345",
+  "proNbr": "1221223",
+  "pkupDate": "2015-12-06",
+  "inspectionContext": {
+    "inspectionSIC": "UPO",
+    "shiftCd": "I",
+    "inspectorFirstName": "VINCENT",
+    "inspectorLastName": "MULKA",
+    "inspectorEmployeeID": "h8703"
+  }
+}

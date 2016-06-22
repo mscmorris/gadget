@@ -1,0 +1,98 @@
+<div id="inspection-index">
+  <ig-header data-title="{{vm._currInspection.proNbr}} - {{vm._currInspection.inspectionStatusCd}}" flex-val="initial">
+    <hr class="tbar-vertical-divider-inspect">
+    <div layout="row" layout-align="start center" class="toolbar-btn">
+      <md-icon md-svg-src="images/wni_control-action-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
+      <span>Action</span>
+    </div>
+    <hr class="tbar-vertical-divider-inspect">
+    <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="vm.openSubmitDialog()">
+      <md-icon md-svg-src="images/wni_control-submit-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
+      <span>Submit</span>
+    </div>
+  </ig-header>
+    <ig-collapsible id="instructions" data-title="Customer Specific Instructions" heading-color="#333333" expanded="true" flex>
+      <div layout="column" class="content-item" flex ng-show="vm._inspectionDtls">
+        <div class="content-label">Per Client Contract</div>
+        <div class="content-field" ng-repeat="guideLines in vm._inspectionDtls.custSpecificInspGuidelines"><b>{{guideLines.note}}</b></div>
+      </div>
+      <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._inspectionDtls"></div>
+    </ig-collapsible>
+    <ig-collapsible id="dimensions" data-title="Dimensions" heading-color="#FFBE3E" flex>
+      <div class="dimension-details content-item" flex="100" layout="row" ng-show="vm._inspectionDtls">
+        <div id="container-pieces-notes"  flex="60" layout="column">
+          <div ng-repeat="mitem in vm._dimensions" dimension-row dim-item="mitem" update-fn="vm.triggerUpdateDims(mitem)"
+               class="container-pieces inspect-measures" flex="initial">
+          </div>
+          <div layout="row" class="spacetop-1">
+            <button class="action-btn" ng-click="vm.addNewDimRows(1)" ng-disabled="vm._addDimRowDisabled">
+              Add Row
+            </button>
+          </div>
+        </div>
+        <div flex="5">&nbsp;</div>
+        <div style="border-left: 1px solid black;" flex="5">&nbsp;</div>
+        <div id="container-other-details" flex="30" layout="column">
+          <div id="container-weight"  flex="25" layout="column" class="content-item">
+            <div class="content-label" flex="initial">Total Weight</div>
+            <div class="content-field" flex="grow">{{vm._currInspection.totGrossWeight}}</div>
+          </div>
+          <div id="container-feet"    flex="25" layout="column" class="content-item">
+            <div class="content-label" flex="initial">Cubic Feet</div>
+            <div layout="row">
+              <input type="text" class="inp-size-4 txt-center" disabled ng-model="vm._inspectionDtls.totGrossVolume"/>
+              <span class="content-label">&nbsp;ft<sup>3</sup></span>
+            </div>
+          </div>
+          <div id="container-density" flex="25" layout="column" class="content-item">
+            <div class="content-label" flex="initial">Density (PCF)</div>
+            <div layout="row">
+              <input type="text" class="inp-size-4 txt-center" disabled ng-model="vm._inspectionDtls.totDensity"/>
+              <span class="content-label">&nbsp;lbs/ft<sup>3</sup></span>
+            </div>
+          </div>
+          <div flex="15">&nbsp;</div>
+          <div id="container-counts" layout="row">
+            <div layout="column" class="content-item" flex>
+              <div class="content-label">Total Pieces</div>
+              <div class="content-field">{{vm._currInspection.totPieceCnt}}</div>
+            </div>
+            <div class="content-divider" flex="grow">=</div>
+            <div layout="column" class="content-item" flex>
+              <div class="content-label">Motor Moves</div>
+              <div class="content-field">{{vm._currInspection.motorizedPiecesCnt}}</div>
+            </div>
+            <div class="content-divider" flex="grow">+</div>
+            <div layout="column" class="content-item" flex>
+              <div class="content-label">Loose Pieces</div>
+              <div class="content-field">{{vm._currInspection.loosePiecesCnt}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-include="'partials/placeholders/emptyPane.html'" ng-show="!vm._inspectionDtls"></div>
+    </ig-collapsible>
+    <ig-collapsible id="notes" data-title="Notes" heading-color="#858585" flex>
+      <div layout="column" class="content-item">
+        <div class="content-label">Enter notes below</div>
+        <textarea ng-model="vm._inspectionDtls.inspectionNotes.note" class="spacetop-1"></textarea>
+      </div>
+    </ig-collapsible>
+    <ig-collapsible id="photos" data-title="This Inspection's Photos" heading-color="#1976D2" flex>
+      <div layout="column">
+        <div layout="row" layout-wrap>
+          <ig-gallery-image ng-repeat="photo in vm._gallery_images" fname="photo.filename" fsrc="photo.ThumbnailBytes" op-code="photo.DmsOpCode" id="photo.Id" update-fn="vm.reloadPhotos()" >
+          </ig-gallery-image>
+        </div>
+        <div ng-click="vm.openFileBrowser('#manualUploadInput')" class="add-photo-btn">
+          <md-icon md-svg-src="images/wni_manual-upload-2x.svg" class="manual-upload-icon"></md-icon>Manually Add External Photo
+        </div>
+        <div ng-hide="true">
+          <input id="manualUploadInput" type="file" onchange="angular.element(this).scope().$parent.$parent.vm.selectPhotoManually(this)">
+        </div>
+      </div>
+    </ig-collapsible>
+    <img class="camera-icon" src="images/wni_camera-button-3x.svg" width="130" height="130"
+       ng-show="vm._cameraAvailable" ng-click="vm.launchCamera()"/>
+  </md-content>
+</div>

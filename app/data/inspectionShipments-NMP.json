@@ -1,0 +1,52 @@
+{
+  "inspectionShipment": [{
+    "sourceOfRecommendation": "1",
+    "shipmentInstID": "12345",
+    "proNbr": "123456782",
+    "pkupDate": "2015-12-06",
+    "originSIC": "UPO",
+    "destSIC": "XIN",
+    "totPieceCnt": "1",
+    "totGrossWeight": 24.3,
+    "inspectionStatusCd": "R",
+    "shipperName": "WALMART",
+    "consigneeName": "ford",
+    "dockLocation": "123",
+    "loadDoor": "022",
+    "breakDoor": "022",
+    "eta": "11/01/14 13:47",
+    "location": "ENRT UPO ITSB-0321",
+    "inspectionContext": {
+      "inspectionSIC": "UPO",
+      "shiftCd": "I",
+      "inspectorFirstName": "VINCENT",
+      "inspectorLastName": "MULKA",
+      "inspectorEmployeeID": "h8703"
+    }
+  },
+    {
+      "sourceOfRecommendation": "1",
+      "shipmentInstID": "12346",
+      "proNbr": "07030565505",
+      "pkupDate": "2015-12-07",
+      "originSIC": "UPO",
+      "destSIC": "XIN",
+      "totPieceCnt": "2",
+      "totGrossWeight": 24.3,
+      "inspectionStatusCd": "P",
+      "shipperName": "WALMART",
+      "consigneeName": "FORD",
+      "dockLocation": "124",
+      "loadDoor": "033",
+      "breakDoor": "023",
+      "eta": "11/01/14 13:47",
+      "location": "ENRT UPO ITSB-0321",
+      "inspectionContext": {
+        "inspectionSIC": "UPO",
+        "shiftCd": "I",
+        "inspectorFirstName": "DENVER",
+        "inspectorLastName": "BOHLIN",
+        "inspectorEmployeeID": "h8703"
+      }
+    }]
+}

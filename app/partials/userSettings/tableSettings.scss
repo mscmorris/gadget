@@ -1,0 +1,104 @@
+
+.settings-content {
+  padding: 0 2rem 2rem 2rem;
+}
+
+/* Table Settings Menu styles */
+.t-settings {
+
+  .slip-swiping-container {
+    overflow-x: hidden;
+  }
+
+  .slip-list li {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+  }
+
+  .action-btn {
+    background-color: $body-text-light;
+    text-align: center;
+  }
+}
+
+.t-settings-inspection {
+  @extend .t-settings;
+
+  .slip-reordering {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+    background-color: $xpo-red-hex !important;
+    color: $body-text-light;
+
+    svg {
+      fill: $body-text-light !important;
+    }
+  }
+
+  .slip-list .radio-contain svg {
+    fill: $xpo-red-hex;
+  }
+}
+/* End Table Settings Menu */
+
+
+/* Slip List item styles */
+.slip-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  li {
+    min-height: 3rem;
+    width: 100%;
+    padding: 0 .5rem;
+    color: $xpo-black-hex;
+    background-color: #FFFFFF;
+    border-bottom: thin solid $xposupp-grey2-hex;
+
+    .scrubber svg {
+      fill: $xpo-black-hex;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .arrow-contain {
+      height: 3rem;
+      padding: 0 .5rem;
+      background-image: url("../images/wni_menu-activate-1x.svg");
+      background-repeat: no-repeat;
+      background-size: 2rem;
+      background-position: right .5rem center;
+
+    }
+
+    .reorder-btn {
+      height: 2rem;
+      background-repeat: no-repeat;
+      background-size: 2rem;
+      background-position: bottom center;
+
+    }
+
+    .reorder-btn-top {
+      @extend .reorder-btn;
+      background-image: url("../images/wni_menu-move-arrow-up-1x.svg");
+
+    }
+
+    .reorder-btn-bottom {
+      @extend .reorder-btn;
+      background-image: url("../images/wni_menu-move-arrow-dn-1x.svg");
+
+    }
+
+  }
+  li:first-child {
+    border-top: thin solid $xposupp-grey2-hex;
+  }
+  //li:last-child {
+  //  border-bottom: none;
+  //}
+}
+/* End Slip List item styles */

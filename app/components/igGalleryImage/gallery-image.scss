@@ -1,0 +1,104 @@
+@import "app/utils/site_variables.scss";
+
+.gallery-img {
+  margin: .5rem;
+  padding: .5rem;
+  .gallery-img-footer {
+    color: $xpo-red-hex;
+    font-size: .85rem;
+    margin-top: .01rem;
+    padding: .5rem 0 .5rem 0;
+    text-align: center;
+    border: $xpo-red-hex thin solid;
+  }
+}
+
+.frame-box {
+  .image-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  .storage-source-dms {
+    z-index: 10;
+    position: absolute;
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .storage-source-local {
+    z-index: 10;
+    position: absolute;
+    height: 2rem;
+    width: 2rem;
+    svg {
+      fill:$alt-orange-da-hex;
+    }
+  }
+
+  .storage-img, .frame-img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 800px) {
+
+  .gallery-img {
+    .gallery-img-footer {
+      width: 7.6rem;
+      margin-left: 2%;
+      cursor: pointer;
+    }
+    .gallery-img-delete{
+
+      padding-right :.5rem;
+      svg {fill:#CC0000;}
+
+    }
+  }
+
+  .frame-box {
+    $container-length: 8rem;
+    height: $container-length;
+    width: $container-length;
+    position: relative;
+    .storage-source-dms, .storage-source-local {
+      bottom: -0.5rem;
+      right: -0.65rem;
+    }
+  }
+}
+
+/* Responsive: Screens larger than the tablet */
+@media screen and (min-width: 1281px) {
+
+  .gallery-img {
+    .gallery-img-footer {
+      width: 7rem;
+      cursor: pointer;
+    }
+    .gallery-img-delete{
+
+      padding-right :.5rem;
+      svg {fill:#CC0000;}
+
+    }
+  }
+
+  .frame-box {
+    $container-length: 7.375em;
+    height: $container-length;
+    width: $container-length;
+    position: relative;
+    .storage-source-dms, .storage-source-local {
+      bottom: -0.5rem;
+      right: -0.65rem;
+    }
+  }
+}

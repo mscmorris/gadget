@@ -1,0 +1,17 @@
+<div class="outer-container">
+    <div layout="row" class="collapse-header" ng-click="innerExpand()">
+        <div class="content-border" ng-style="headingColorStyle"></div>
+        <div layout="row" flex>
+          <md-icon md-svg-src="images/wni_tree-expand-1x.svg" class="toggle-icon" ng-show="!expanded"></md-icon>
+          <md-icon md-svg-src="images/wni_tree-collapse-1x.svg" class="toggle-icon" ng-show="expanded"></md-icon>
+          <div class="titleBox" flex>{{title}}</div>
+        </div>
+    </div>
+    <div layout="row" class="colps-content-contain">
+        <div ng-style="headingColorStyle" class="content-border"></div>
+        <div ng-transclude ng-show="expanded" class="collapse-content" flex
+             ng-style="bgColorStyle"  ng-class="{'content-shown': expanded, 'content-hidden': !expanded}"
+          >
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div layout="column" layout-wrap>
+  <div layout="row" layout-wrap flex>
+    <div layout="column" class="manifestItem-content-item" flex="20">
+      <div class="content-label">PRO</div>
+      <div class="content-field"><span class="required-field">{{manifestitem.proNbr}}</span></div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="10">
+      <div class="content-label">Seq</div>
+      <div class="content-field">{{manifestitem.seq}}</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="15">
+      <div class="content-label">Motor Moves</div>
+      <div class="content-field">{{manifestitem.motorizedPiecesCnt}}</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="15">
+      <div class="content-label">Billed Pieces</div>
+      <div class="content-field">{{manifestitem.billPiecesCnt}}</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="10">
+      <div class="content-label">Cube</div>
+      <div class="content-field">{{manifestitem.totGrossVolume}}</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="10">
+      <div class="content-label">Weight</div>
+      <div class="content-field">{{manifestitem.totGrossWeight}}</div>
+    </div>
+    <div class="manifestItem-content-item" ng-click="onExpand()">
+      <md-icon md-svg-src="images/wni_expand-arrow-1x.svg" ng-show="!expanded"></md-icon>
+      <md-icon md-svg-src="images/wni_collapse-arrow-1x.svg" ng-show="expanded"></md-icon>
+    </div>
+  </div>
+  <div layout="row" layout-wrap class="space-top-minus-1" flex>
+    <div layout="column" class="manifestItem-content-item" flex="20">
+      <div class="content-label" ng-show="expanded">Indicator</div>
+      <div class="content-field"ng-show="expanded">-</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="10">
+      <div class="content-label" ng-show="expanded">DestSIC</div>
+      <div class="content-field"ng-show="expanded">{{manifestitem.destSIC}}</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex="15">
+      <div class="content-label"ng-show="expanded">Load Door</div>
+      <div class="content-field"ng-show="expanded">{{manifestitem.loadDoor}}</div>
+    </div>
+    <div layout="column" class="manifestItem-content-item" flex>
+      <div class="content-label" ng-show="expanded">Shipper Name</div>
+      <div class="content-field"ng-show="expanded">{{manifestitem.shipperName}}</div>
+    </div>
+  </div>
+  <div layout="row" ng-show="expanded" layout-wrap class="space-top-minus-1 space-bottom-2" flex>
+    <div layout="column" class="manifestItem-content-item" flex>
+      <div class="content-label">Status</div>
+      <div class="content-field">Inspected not Corrected</div>
+    </div>
+    <div class="action-btn spaceright-2" layout="row" layout-align="center">
+      <md-icon md-svg-src="images/wni_correction-2x.svg" class="ig-icon-button" aria-label="Add to Inspection List"></md-icon>
+      <div layout="column" layout-align="center">
+        Add to Inspection List
+      </div>
+    </div>
+    <div class="action-btn" layout="row" layout-align="center">
+      <md-icon md-svg-src="images/wni_planninglist-2x.svg" class="ig-icon-button" aria-label="Add to Planning List"></md-icon>
+      <div layout="column" layout-align="center">
+        Add to Planning List
+      </div>
+    </div>
+  </div>
+
+</div>
+

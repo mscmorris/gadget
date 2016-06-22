@@ -1,0 +1,10 @@
+<div id="dialog-alert">
+  <div class="header">
+    <h2 class="md-title dialog-title ng-binding">{{vm._dialogTitle}}</h2>
+    <p layout="row" layout-align="center" ng-bind-html="vm._dialogContent"></p>
+  </div>
+  <div class="spacetop-2" layout="row" layout-align="start end">
+    <div class="dialog-btn" ng-click="vm.cancelDialog()" md-ink-ripple flex>{{vm._dialogCancelTxt}}</div>
+    <div class="dialog-btn-submit" ng-click="vm.hideDialog()" md-ink-ripple flex>{{vm._dialogConfirmTxt}}</div>
+  </div>
+</div>

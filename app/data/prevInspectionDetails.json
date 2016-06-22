@@ -1,0 +1,47 @@
+{
+  "prevInspectionDetails": [
+    {
+      "sourceOfRecommendation": "1",
+      "shipmentInstID": "12345",
+      "proNbr": "1221223",
+      "inspectorPieceDimensions": [
+        {
+          "seq": 1,
+          "pieceCnt": 1,
+          "inspectorDimensions": {
+            "seq": 1,
+            "length": 45.0,
+            "width": 45.0,
+            "height": 51.5
+          }
+        },
+        {
+          "seq": 2,
+          "pieceCnt": 1,
+          "inspectorDimensions": {
+            "seq": 1,
+            "length": 35.0,
+            "width": 43.0,
+            "height": 51.0
+          }
+        }
+      ],
+      "totGrossVolume": "104.77",
+      "totDensity": "8.59",
+      "inspectionStatusCd": "1",
+      "inspectionDateTime": "1440047160000",
+      "inspectionContext": {
+        "inspectionSIC": "XLN",
+        "shiftCd": "I",
+        "inspectorFirstName": "JANE",
+        "inspectorLastName": "SMITH",
+        "inspectorEmployeeID": "A1234"
+      },
+      "inspectionNotes": {
+        "note": "No Notes",
+        "enteredByID": "A1234",
+        "enteredDateTime": "1440047160000"
+      }
+    }
+  ]
+}

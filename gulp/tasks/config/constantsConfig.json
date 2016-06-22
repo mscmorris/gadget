@@ -1,0 +1,66 @@
+{
+  "development": {
+    "LOG_ON_RESPONSE": "/services/logonresponse.json",
+    "INSPECTIONS_END_POINT": "http://tctsc.con-way.com/services/inspection",
+    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
+    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
+    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
+    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
+    "TWM_END_POINT": "wss://twmctsc.con-way.com:15443/jms",
+    "TWM_CONFIG": {
+      "twmCicsRegion": "CONWAY.CTS.CTSC.S2C",
+      "twmDestination": "InspectorDeviceEvents",
+      "twmResponseQueue": "InspectorDeviceResponseEvents"
+    }
+  },
+  "tctsc": {
+    "LOG_ON_RESPONSE": "/services/logonresponse.json",
+    "INSPECTIONS_END_POINT": "http://tctsc.con-way.com/services/inspection",
+    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
+    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
+    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
+    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
+    "TWM_END_POINT": "wss://twmctsc.con-way.com:15443/jms"
+  },
+  "tctsr": {
+    "LOG_ON_RESPONSE": "/services/logonresponse.json",
+    "INSPECTIONS_END_POINT": "http://tctsr.con-way.com/services/inspection",
+    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
+    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
+    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
+    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
+    "TWM_END_POINT": "ws://twmctsr.con-way.com:15043/jms"
+  },
+  "production": {
+    "LOG_ON_RESPONSE": "/services/logonresponse.json",
+    "INSPECTIONS_END_POINT": "/components/inspect/shipments.json",
+    "DMS_END_POINT": "/components/shared/camera/dms_photos.json",
+    "USER_LOGIN_ENDPOINT": "/services/logonresponse.json",
+    "PRICING_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/pricing_app",
+    "CORRECTIONS_APP_ENDPOINT": "http://tctsc.con-way.com/webapp/corrections_app",
+    "TWM_END_POINT": "wss://twmctsc.con-way.com:15443/jms"
+  },
+  "env_independent": {
+    "CODE_CONSTANTS": {
+      "INSPECT_STATUS": {
+        "R": "Flagged for Inspection",
+        "P": "In Progress",
+        "I": "Inspected",
+        "X": "Dismissed",
+        "N": "Inspected Not Corrected",
+        "Y": "Recommended",
+        "NONE": "No Status"
+      },
+      "SHIFT_CODE": {
+        "O": "Outbound",
+        "I": "Inbound",
+        "F": "FAC",
+        "D": "Day Reship"
+      },
+      "PREFERENCES": {
+        "LIST_I": "I-dtColumnsPref"
+      },
+      "MAX_INSPECT_DIMS": 50
+    }
+  }
+}

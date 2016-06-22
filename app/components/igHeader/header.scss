@@ -1,0 +1,161 @@
+/* Custom page header */
+md-menu-content.tbar-menu-content {
+  padding: 0;
+  max-height: none;
+}
+
+$toolbar-height: 4rem;
+
+.ig-header-wrapper {
+  height: $toolbar-height;
+  z-index: 20;
+}
+
+.main-toolbar {
+  position: fixed;
+  -webkit-box-shadow: 0px 3px 5px 0px rgba(133,133,133,1);
+  -moz-box-shadow: 0px 3px 5px 0px rgba(133,133,133,1);
+  box-shadow: 0px 3px 5px 0px rgba(133,133,133,1);
+
+  md-menu-bar {
+    padding: 0;
+    height: 100%;
+
+    md-menu-content {
+      &.md-menu-bar-menu {
+        padding: 1rem 0;
+      }
+
+      md-menu-item {
+        height: 3rem;
+
+        button {
+          text-align: left;
+          padding: 0 1rem;
+          font-size: 1rem;
+          height: 3rem;
+          &:hover {
+            background-color: $xpo-red-hex;
+            color: $body-text-light;
+          }
+        }
+      }
+    }
+  }
+
+  /* Header font size should be 1.5rem adjusting to the root font sizes designated
+  by $font-base-size-web and $font-base-size-tab */
+  .toolbar-text {
+    font-size: 1.25rem;
+  }
+
+  .toolbar-btn {
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 .4em;
+  }
+
+  .toolbar-upo {
+    background-color: #FFFFFF;
+    color: $xpo-red-hex;
+    height: 100%;
+    margin-right: -16px;
+    margin-left: .55em;
+    padding: .5em;
+    text-shadow: none;
+  }
+
+  .toolbar-controls {
+    height: 100%;
+  }
+
+  .md-toolbar-tools {
+    height: $toolbar-height;
+    max-height: $toolbar-height;
+  }
+}
+
+.toolbar-inspect {
+  @extend .main-toolbar;
+  background-color: $xpo-red-hex !important;
+}
+
+.toolbar-planning {
+  @extend .main-toolbar;
+  background-color: #4152AE !important;
+}
+
+.toolbar-viewphoto {
+  @extend .main-toolbar;
+  background-color: $xpo-red-hex !important;
+}
+
+.tbar-vertical-divider {
+  width: 1px;
+  height: 100%;
+  margin: 0;
+  display: inline-block;
+  position: absolute;
+}
+
+.tbar-vertical-divider-plan {
+  //not sure how to override this from the main scss so i'm renaming them
+  $divide-color: #0078B7;
+  @extend .tbar-vertical-divider;
+  border-color: $divide-color;
+  background-color: $divide-color;
+}
+
+.tbar-vertical-divider-inspect {
+  $divide-color: #DD5555;
+  @extend .tbar-vertical-divider;
+  border-color: $divide-color;
+  background-color: $divide-color;
+}
+
+.tbar-vertical-divider-viewphoto {
+  $divide-color: #DD5555;
+  @extend .tbar-vertical-divider;
+  border-color: $divide-color;
+  background-color: $divide-color;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 800px) {
+  .main-toolbar {
+    .ig-icon-button {
+      width: 1.425rem;
+      height: 1.425rem;
+
+      &.nav-icon {
+        width: 2.2rem;
+        height: 2.2rem;
+        margin: 0;
+      }
+    }
+
+    md-menu {
+      padding: 1.2rem 0;
+    }
+  }
+}
+
+/* Responsive: Screens larger than the tablet */
+@media screen and (min-width: 1281px) {
+  .main-toolbar {
+    .ig-icon-button {
+      width: 2.325rem;
+      height: 2.325rem;
+
+      &.nav-icon {
+        width: 3.2rem;
+        height: 3.2rem;
+        margin: 0;
+      }
+    }
+
+    md-menu {
+      padding: 0.8rem 0;
+    }
+  }
+}

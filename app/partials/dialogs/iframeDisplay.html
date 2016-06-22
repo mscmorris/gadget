@@ -1,0 +1,11 @@
+<script type="text/javascript">
+  $("#iframeDisplay").on('load', function() {
+    $(".iframeWrapper").removeClass("loading-2to5-gif");
+  });
+</script>
+<md-dialog class="iframeWrapper">
+  <md-dialog-content class="iframeWrapper loading-2to5-gif">
+    <iframe id="iframeDisplay" ng-src="{{vm._iframeContentSrc | trustedUrl}}"></iframe>
+  </md-dialog-content>
+</md-dialog>
+

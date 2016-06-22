@@ -1,0 +1,23 @@
+<div id="sicChange">
+  <md-list>
+    <div class="input-contain" flex>
+      <input type='text' required name="selectSIC" placeholder="ENTER SIC" ng-model="igH.sicChanger.selectSIC">
+    </div>
+    <md-divider class="ng-scope"></md-divider>
+    <div class="input-contain" flex>
+      <md-select class="select" placeholder="SELECT SHIFT" ng-model="igH.sicChanger.shiftSelected"  md-on-open="igH.loadShifts()">
+        <md-option ng-value="shift" ng-repeat="shift in igH.availshifts">
+          {{shift}}
+        </md-option>
+      </md-select>
+    </div>
+    <md-divider class="ng-scope"></md-divider>
+    <div class="input-contain" flex>
+      {{igH.inspectionContext.inspectorFirstName + " " + igH.inspectionContext.inspectorLastName}}
+    </div>
+    <md-divider class="ng-scope"></md-divider>
+    <div layout="row" layout-align="center" class="dialog-row">
+      <md-button  class="md-raised submitButton" ng-click="igH.onSubmitDialog(igH.sicChanger)">Submit Changes</md-button>
+    </div>
+  </md-list>
+</div>

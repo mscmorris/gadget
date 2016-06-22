@@ -1,0 +1,47 @@
+[{
+  "data": "shipmentInstID",
+  "title": "SID",
+  "visible": false
+}, {
+  "data": "proNbr",
+  "title": "PRO"
+}, {
+  "data": "sourceOfRecommendation",
+  "title": "Report ID"
+}, {
+  "data": "inspectionStatusCd",
+  "title": "Status"
+}, {
+  "data": "location",
+  "title": "Location"
+}, {
+  "data": "eta",
+  "title": "ETA"
+}, {
+  "data": "breakDoor",
+  "title": "Break Door"
+}, {
+  "data": "shipperName",
+  "title": "Shipper",
+  "visible": false
+}, {
+  "data": "loadDoor",
+  "title": "Load Door",
+  "visible": false
+}, {
+  "data": "totPieceCnt",
+  "title": "Total Pieces",
+  "visible": false
+}, {
+  "data": "totGrossWeight",
+  "title": "Total Weight",
+  "visible": false
+}, {
+  "data": "originSIC",
+  "title": "Origin SIC",
+  "visible": false
+}, {
+  "data": "destSIC",
+  "title": "Destination SIC",
+  "visible": false
+}]

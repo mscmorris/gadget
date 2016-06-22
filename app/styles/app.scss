@@ -1,0 +1,579 @@
+
+@import "app/utils/site_variables.scss";
+@import "app/components/igCollapsible/collapsible.scss";
+@import "app/components/igGalleryImage/gallery-image.scss";
+@import "app/components/igHeader/header.scss";
+@import "app/partials/inspectionInProgress/inspection.scss";
+@import "app/partials/inspectionList/inspectionList.scss";
+@import "app/partials/viewPhoto/viewPhoto.scss";
+@import "app/partials/shipmentDetails/shipmentDetails.scss";
+@import "app/partials/userSettings/tableSettings.scss";
+@import "app/partials/manifestDetails/manifestDetails.scss";
+@import "app/components/manifestItem/manifestItem.scss";
+
+//@import "app/partials/planning/planning.scss"; -- (Denver): this is currently empty and I'm not sure if it will be used
+
+
+// Default font is Roboto
+body {
+  font-family: $font-base-family;
+}
+
+a {
+  text-decoration: none;
+}
+
+// Browser focus outline to zero
+*:focus {
+  outline: 0;
+}
+
+svg {
+  fill: $body-text-light;
+}
+
+md-toast {
+  font-size: 1rem;
+  min-height: 4rem;
+  max-height: 100%;
+  padding: .5rem;
+  z-index: 250;
+}
+
+.text-offset {
+  color: $xposupp-grey2-hex;
+}
+
+.text-opt{
+  @extend .text-offset;
+  font-size: 1rem;
+  margin: .25rem 0;
+}
+
+.text-label {
+  color: $xpocust-portal-grey-hex;
+}
+
+.text-primary {
+  color: $xpo-black-hex;
+}
+
+.text-error {
+  color: $error-red;
+}
+
+.text-urgent {
+  color: $xpo-red-hex;
+  font-weight: bold;
+}
+
+.txt-center {
+  text-align: center;
+}
+
+.required-field {
+  color: $xpo-red-hex;
+}
+
+textarea, textarea.ng-valid {
+  border-color: $xposupp-grey3-hex;
+  border-width: thin;
+  min-height: 6em;
+}
+
+#master-page, md-content {
+  background-color: $master-bg-color;
+}
+
+/* DIALOG STYLES */
+.dialog-title {
+  font-size: 1.5rem;
+}
+
+.dialog-btn {
+  cursor: pointer;
+  border: 1px $xposupp-grey2-hex solid;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.dialog-btn-submit {
+  @extend .dialog-btn;
+  color: $xpo-red-hex;
+}
+
+.dialog-generic {
+  background-color: #FFFFFF;
+  border: 2px solid $xposupp-grey2-hex;
+  min-width: 400px;
+  .header {
+    padding: 0 2.5rem;
+    text-align: center;
+  }
+}
+
+#dialog-alert {
+  @extend .dialog-generic;
+}
+
+#dialog-submit {
+  @extend .dialog-generic;
+}
+
+#move {
+  padding :.8rem .8rem;
+  background-color:$xposupp-grey3-hex;
+  min-width: 400px;
+  .header{
+    padding-left: 1.5rem;
+  }
+}
+
+.dialog-btn-contain {
+  padding: 0 .8rem;
+}
+
+.md-button.md-raised.button-confirm{
+  background-color:$xpocust-portal-blue-hex;
+  margin: 0.1rem 0;
+  width: 100%;
+  color:$body-text-light;
+}
+
+.md-button.md-raised.button-confirm:hover {
+  background-color:$xpocust-portal-blue-hex;
+}
+
+.md-button.md-raised.button-dismiss{
+  background-color:$xpo-red-hex;
+  margin: 0.1rem 0;
+  width: 100%;
+  color:$body-text-light;
+}
+
+.md-button.md-raised.button-dismiss:hover{
+  background-color:$xpo-red-hex;
+}
+
+#scan {
+  min-width: 400px;
+  min-height: 200px;
+  .header {
+    padding-top:1rem;
+    padding-left: 1.5rem;
+  }
+  .input-row{
+    padding-top:1.5rem;
+  }
+  input[type="text"]{
+    margin-right: 1.5rem;
+  }
+
+}
+
+#find {
+  min-width: 400px;
+  padding:0;
+  .header {
+    padding-left: 1.5rem;
+  }
+  input[type="text"] {
+
+    height:2rem;
+    border-radius: 5px;
+  }
+  md-divider {
+    border-top-color:$nested1-bg-color;
+
+  }
+  md-list {
+    padding: 0;
+  }
+  button{
+    padding:0 4.2rem;
+    background-color:$xpocust-portal-blue-hex ;
+    color:$body-text-light;
+  }
+}
+
+#sicChange {
+  color:$body-text-light;
+  background-color: $xposupp-grey2-hex;
+  min-width: 400px;
+  .dialog-row {
+    height: 3.8rem;
+  }
+  .input-contain {
+    @extend .dialog-row;
+    padding :.8rem 3rem;
+    font-size: 1rem;
+  }
+  .select{
+    margin: 0;
+    border-radius: 5px;
+  }
+  input[type="text"] {
+    width: 100%;
+    height:2rem;
+    border-radius: 5px;
+  }
+  md-divider {
+    border-top-color:$nested1-bg-color;
+  }
+  md-list {
+    padding-bottom: 0;
+  }
+  .submitButton{
+    margin:0;
+    height: 100%;
+    width:100%;
+    line-height: 2.8rem;
+    background-color: $xpo-red-hex;
+    color:$body-text-light;
+    font-size: 1rem;
+  }
+  md-select.md-default-theme:not([disabled]):focus, md-select:not([disabled]):focus .md-select-value {
+    border-bottom-color: $xpocust-portal-blue-hex;
+    color:$body-text-light;
+  }
+  md-select.md-default-theme, md-select .md-select-value {
+    border-bottom-color: $body-text-light;
+  }
+}
+
+.iframeWrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#iframeDisplay {
+  width: 100%;
+  height: 100%;
+}
+
+.loading-2to5-gif {
+  background:url('../images/2-5_second_load.gif') center center no-repeat #FFFFFF;
+}
+/* END DIALOG STYLES */
+
+.nav-drawer {
+  $navd-border-color: #ACACAC;
+  $navd-border-width: 1px;
+  $navd-border-style: solid;
+
+  md-item-content {
+    background-color: $xpocust-portal-grey-hex;
+    border: $navd-border-width $navd-border-style $navd-border-color;
+  }
+
+  md-list {
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  .nav-draw-divide {
+    border: none;
+    margin: 2em 0;
+  }
+
+  .nav-drawer-li {
+    border-top: $navd-border-width $navd-border-style $navd-border-color;
+    border-bottom: $navd-border-width $navd-border-style $navd-border-color;
+  }
+
+  .nav-drawer-li-green {
+    @extend .nav-drawer-li;
+    background-color: $alt-green-hex;
+  }
+
+  .nav-drawer-li-red {
+    @extend .nav-drawer-li;
+    background-color: $xpo-red-hex;
+  }
+
+  .nav-drawer-li-blue {
+    @extend .nav-drawer-li;
+    background-color: $alt-navy-hex;
+  }
+
+  .nav-drawer-li-yellow {
+    @extend .nav-drawer-li;
+    background-color: $alt-yellow-da-hex;
+  }
+
+}
+
+/* Navigation font size should be 1.125rem adjusting to the root font sizes designated
+by $font-base-size-web and $font-base-size-tab */
+.nav-text {
+  font-size: 1.125rem;
+}
+
+.nav-text-sm {
+  font-size: .75rem;
+}
+
+/* Style for icons since Angular Material <md-icon> doesn't support PNG format */
+.ig-icon-button {
+  padding: 7px !important;
+  min-width: 0;
+  min-height: 0;
+  line-height: normal;
+}
+
+/* INPUT STYLES */
+.inp-size-2 {
+  width: 2rem;
+}
+
+.inp-size-4 {
+  width: 4rem;
+}
+
+.inp-size-5 {
+  width: 5rem;
+}
+/* END INPUT STYLES */
+
+/* LAYOUT SPACING STYLES */
+.spacetop-1 {
+  margin-top: 1rem;
+}
+.spacetop-2 {
+  margin-top: 2rem;
+}
+
+.spaceright-1 {
+  margin-right: 1rem;
+}
+
+.spaceright-2 {
+  margin-right: 2rem;
+}
+
+.spaceright-4 {
+  margin-right: 4rem;
+}
+
+.space-top-minus-1{
+  margin-top:-1rem;
+}
+
+.space-bottom-2{
+  margin-bottom: 2rem;
+}
+/* END LAYOUT SPACING STYLES */
+
+.rounded-5 {
+  border-radius: 5px;
+}
+
+.content-item {
+  padding: .5rem;
+  margin: 0 .5rem;
+
+  &.left {
+    min-width: 50%;
+  }
+
+  .content-label {
+    @extend .text-offset;
+    font-size: .85rem;
+    margin-top: .25rem;
+  }
+
+  .content-field {
+    @extend .text-primary;
+    font-size: 1rem;
+    margin: .25rem 0;
+  }
+
+  .content-box {
+    padding: .25em;
+    border: 1px solid $xpo-black-hex;
+  }
+}
+
+div.dimension-details {
+  .content-field {
+    @extend .text-primary;
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .content-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .content-label {
+    @extend .text-offset;
+    margin: 0 0 .5rem 0;
+    font-size: .85rem;
+  }
+
+  .content-divider {
+    @extend .text-offset;
+    margin: 0;
+    font-size: 1rem;
+    display: flex;
+    align-self: flex-end;
+    justify-content: center;
+  }
+
+
+  .container-pieces {
+    margin-bottom: 1rem;
+  }
+
+  #container-other-details {
+    .content-item {
+      margin-bottom: 1rem;
+    }
+  }
+
+  #container-counts {
+    .content-item {
+      margin-bottom: 0;
+    }
+  }
+
+  input[type="text"] {
+    border-color: $xposupp-grey3-hex;
+    border-width: thin;
+    padding: .25rem;
+    -webkit-box-shadow: inset 0px 2px 3px 0px rgba(118, 113, 114, 0.2);
+    -moz-box-shadow:    inset 0px 2px 3px 0px rgba(118, 113, 114, 0.2);
+    box-shadow:         inset 0px 2px 3px 0px rgba(118, 113, 114, 0.2);
+  }
+}
+
+.action-btn {
+  border: 1px $xpo-red-hex solid;
+  padding: .5rem;
+  color: $xpo-red-hex;
+  background-color: transparent;
+  display: inline-flex;
+  cursor: pointer;
+
+  svg {
+    fill: $xpo-red-hex;
+  }
+
+  &:hover:not([disabled]) {
+    color: $body-text-light;
+    background-color: $xpo-red-hex;
+    svg {
+      fill: $body-text-light;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.35;
+  }
+}
+
+.content-not-found {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.cubeft-density-contain {
+  border-left: thin solid $xpo-black-hex;
+  padding-left: 2em;
+}
+
+.st-selected {
+  background: #216eff !important;
+  color: white !important;
+}
+
+.st-sort-ascent:before{
+  content: '\25B2';
+}
+
+.st-sort-descent:before{
+  content: '\25BC';
+}
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 800px) {
+  html {
+    font-size: $font-base-size-tab;
+  }
+}
+
+/* Responsive: Screens larger than the tablet */
+@media screen and (min-width: 1281px) {
+  html {
+    font-size: $font-base-size-web;
+  }
+}
+
+/** BEGIN ANIMATIONS **/
+/*
+  Unfortunately each browser vendor requires
+  its own definition of keyframe animation code...
+*/
+@keyframes fade_out {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-webkit-keyframes fade_out {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-moz-keyframes fade_out {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-o-keyframes fade_out {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@keyframes fade_in {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@-webkit-keyframes fade_in {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@-moz-keyframes fade_in {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@-o-keyframes fade_in {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+/** END ANIMATIONS **/

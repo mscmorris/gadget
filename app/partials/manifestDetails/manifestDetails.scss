@@ -1,0 +1,19 @@
+.manifestDetails-container {
+  padding: 2rem 1.5rem;
+  background-color: $content-bg-color;
+}
+
+md-list-item.md-no-proxy.manifestItem{
+  padding : 0 1.5rem;
+}
+
+.manifestDetails-content-item {
+  @extend .content-item;
+  padding:0.2rem !important;
+}
+
+.pad-bottom {
+  padding-bottom: .5rem;
+}
+
+

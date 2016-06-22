@@ -1,0 +1,32 @@
+{
+  "pr_inspect1" : {
+      "id": "1",
+      "date": "08/18/15",
+      "time": "22:06",
+      "upo": "XLN",
+      "inspector": {
+        "first_name": "JANE",
+        "last_name": "SMITH"
+      },
+      "measurements": [
+        {"num_pieces": "1", "length": "40", "width": "48", "height": "56"},
+        {"num_pieces": "1", "length": "40", "width": "48", "height": "32"}
+      ],
+      "notes": "PCF was not high enough to move FAK"
+  },
+  "pr_inspect2" : {
+      "id": "2",
+      "date": "08/20/15",
+      "time": "15:32",
+      "upo": "PDX",
+      "inspector": {
+        "first_name": "JOHN",
+        "last_name": "DOE"
+      },
+      "measurements": [
+        {"num_pieces": "1", "length": "40", "width": "48", "height": "56"},
+        {"num_pieces": "1", "length": "40", "width": "46", "height": "35"}
+      ],
+      "notes": ""
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "shipmentDetails": {
+    "originSIC": "UPO",
+    "destSIC": "XIN",
+    "loadDestSIC": "NMP",
+    "dockLocation": "CLDK 69 441-3100"
+  }
+
+}

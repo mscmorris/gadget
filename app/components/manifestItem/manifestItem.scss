@@ -1,0 +1,12 @@
+
+
+.manifestItem-content-item {
+  @extend .content-item;
+  padding:0.2rem !important;
+
+  svg {
+    stroke: $xpo-red-hex;
+  }
+}
+
+

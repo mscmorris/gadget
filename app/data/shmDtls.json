@@ -1,0 +1,115 @@
+{
+  "shipmentDetails": {
+    "shipmentInstID": "12345",
+    "proNbr": "1221223",
+    "pkupDate": "2015-12-06",
+    "originSIC": "UPO",
+    "destSIC": "XIN",
+    "shipperInstID": "111111",
+    "shipperMadCd": "UNJJUNGS000",
+    "shipperName": "TYLER UNION WATERWORKS",
+    "shipperIsDebtor": "true",
+    "consigneeInstID": "222222",
+    "consigneeMadCd": "FAURYXAH000",
+    "consigneeName": "FAURECIA INTERIOR SYSTEMS",
+    "consigneeIsDebtor": "false",
+    "thirdPartyInstID": "333333",
+    "thirdPartyMadCd": "333MENLO",
+    "thirdPartyName": "MENLO",
+    "thirdPartyIsDebtor": "true",
+    "bil2InstID": "333333",
+    "bil2MadCd": "UNJJT991000",
+    "bil2Name": "UNION FOUNDRY",
+    "totGrossWeight": 900,
+    "driverDimensions": [{
+      "seq": 1,
+      "length": 12,
+      "width": 5,
+      "height": 4
+    }],
+    "commodity": [{
+      "seq": 1,
+      "nmfcClass": "125",
+      "nmfcItemCd": "57100-2",
+      "desc": "CLEAN SCOUR WASH COMP LTQ",
+      "packageCd": "PLT",
+      "pieceCnt": 2,
+      "totGrossWeight": "26,000"
+    },{
+      "seq": 2,
+      "nmfcClass": "135",
+      "nmfcItemCd": "ABC",
+      "desc": "Heavy Cubes",
+      "packageCd": "BOX",
+      "pieceCnt": 3,
+      "totGrossWeight": 44.8
+    }],
+    "appliedAgreementID": "112233445566",
+    "appliedRulesetNbr": 1,
+    "agreementFAKText": ["50(125-100)",
+      "75(105-150)"],
+    "item15Exempt": "true",
+    "elsExempt": "true",
+    "linealExempt": "false",
+    "loadDestSIC": "NMP",
+    "dockLocation": "LLC",
+    "loadDoor": "12L",
+    "breakDoor": "13P",
+    "eta": "2015-12-06",
+    "trailerNbr": "123EFU",
+    "billClassCd": "NORM",
+    "accessorialChargeCd": ["MNC", "XLF", "ELS"],
+    "totChargeAmt": 248,
+    "totPieceCnt": 2,
+    "loosePiecesCnt": 0,
+    "motorizedPiecesCnt": 2,
+    "deliveryStatusCd": "FINAL",
+    "cshInd": "false",
+    "remarks": [{
+      "note": "Hello",
+      "enteredByID": "H8703",
+      "enteredDateTime": "2015-12-06"
+    }]
+  },
+  "prevInspectionDetails": [{
+    "sourceOfRecommendation": "1",
+    "shipmentInstID": "12345",
+    "proNbr": "1221223",
+    "inspectorPieceDimensions": [{
+      "seq": 1,
+      "pieceCnt": 1,
+      "inspectorDimensions": {
+        "seq": 1,
+        "length": 12,
+        "width": 5,
+        "height": 4
+      }
+    },
+      {
+        "seq": 2,
+        "pieceCnt": 1,
+        "inspectorDimensions": {
+          "seq": 1,
+          "length": 10,
+          "width": 6,
+          "height": 4
+        }
+      }],
+    "totGrossVolume": "UPO",
+    "totDensity": "XIN",
+    "inspectionStatusCd": "1",
+    "inspectionDateTime": "2015-12-06",
+    "inspectionContext": {
+      "inspectionSIC": "UPO",
+      "shiftCd": "I",
+      "inspectorFirstName": "VINCENT",
+      "inspectorLastName": "MULKA",
+      "inspectorEmployeeID": "h8703"
+    },
+    "inspectionNotes": {
+      "note": "Hello",
+      "enteredByID": "H8703",
+      "enteredDateTime": "2015-12-06"
+    }
+  }]
+}

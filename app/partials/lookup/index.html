@@ -1,0 +1,14 @@
+<div id="scan">
+  <ig-header data-title="Lookup" flex-val="5"></ig-header>
+  <div class="header" flex>
+    <div layout="row">Enter a PRO, door,  or trailer number</div>
+    <span ng-show="vm._invalidinput" class="text-error">The input is not a valid PRO, door, or trailer number.</span>
+    <div layout="row" class="input-row">
+      <input type='text' placeholder="PRO, door, trailer number" ng-model="vm._manifestInputValue" autofocus>
+      <div class="action-btn content-item" layout="row" layout-align="center" ng-click="vm.lookup()">
+        <md-icon md-svg-src="images/wni_drawer-search-2x.svg" class="ig-icon-button" aria-label="Lookup"></md-icon>
+        <div layout="column" layout-align="center">Lookup</div>
+      </div>
+    </div>
+  </div>
+</div>

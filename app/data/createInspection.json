@@ -1,0 +1,48 @@
+{
+  "inspection": {
+    "shipmentInstID": "12345",
+    "proNbr": "1221223",
+    "pkupDate": "2015-12-06",
+    "inspectorPieceDimensions": [{
+      "seq": 1,
+      "pieceCnt": 1,
+      "inspectorDimensions": {
+        "seq": 1,
+        "length": 12,
+        "width": 5,
+        "height": 4
+      }
+    },
+      {
+        "seq": 2,
+        "pieceCnt": 1,
+        "inspectorDimensions": {
+          "seq": 1,
+          "length": 10,
+          "width": 6,
+          "height": 4
+        }
+      }],
+    "totGrossVolume": "UPO",
+    "totDensity": "XIN",
+    "inspectionStatusCd": "Flagged for Inspection",
+    "inspectionDateTime": "2015-12-06",
+    "inspectionContext": {
+      "inspectionSIC": "UPO",
+      "shiftCd": "I",
+      "inspectorFirstName": "VINCENT",
+      "inspectorLastName": "MULKA",
+      "inspectorEmployeeID": "h8703"
+    },
+    "inspectionNotes": {
+      "note": "Hello",
+      "enteredByID": "H8703",
+      "enteredDateTime": "2015-12-06"
+    },
+    "custSpecificInspGuidelines":[ {
+      "note": "Hello",
+      "enteredByID": "H8703",
+      "enteredDateTime": "2015-12-06"
+    }]
+  }
+}

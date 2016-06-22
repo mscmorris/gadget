@@ -1,0 +1,52 @@
+<div id="index">
+    <ig-header data-title="{{vm._currInspection.proNbr}} - {{vm._currInspection.inspectionStatusCd}}" flex-val="initial">
+    </ig-header>
+    <md-content>
+      <div class="manifestDetails-container">
+        <div layout="row" layout-align="start">
+          <div layout="column" layout-align="start" flex="50">
+            <div class="manifestDetails-content-item">Manifest Overview</div>
+            <div layout="row" layout-align="space-between start" class="spacetop-1" layout-wrap flex>
+              <div layout="column" class="manifestDetails-content-item">
+                <div class="content-label">Location</div>
+                <div class="content-field">PRTA</div>
+              </div>
+              <div layout="column" class="manifestDetails-content-item">
+                <div class="content-label">Onboard Pros</div>
+                <div class="content-field">5</div>
+              </div>
+              <div layout="column" class="manifestDetails-content-item">
+                <div class="content-label">Weight</div>
+                <div class="content-field">900</div>
+              </div>
+            </div>
+          </div>
+          <div layout="column" layout-align="start">
+            <div class="manifestDetails-content-item">Head Load Shipments</div>
+            <div layout="row" layout-align="space-between start" class="spacetop-1" layout-wrap flex>
+              <div layout="column" class="manifestDetails-content-item">
+                <div class="content-label">PROs</div>
+                <div class="content-field">0</div>
+              </div>
+              <div layout="column" class="manifestDetails-content-item">
+                <div class="content-label">Length</div>
+                <div class="content-field">13</div>
+              </div>
+              <div layout="column" class="manifestDetails-content-item">
+                <div class="content-label">Destination</div>
+                <div class="content-field">N/A</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <md-divider></md-divider>
+      <md-list>
+        <md-list-item class="manifestItem" ng-repeat="manifestitem in vm._manifestDtls.proDtls">
+          <manifest-item manifestitem="pro" flex></manifest-item>
+          <md-divider class="pad-bottom"></md-divider>
+        </md-list-item>
+      </md-list>
+    </md-content>
+</div>
+

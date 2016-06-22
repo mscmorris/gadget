@@ -1,0 +1,35 @@
+{
+  "manifestDetails": {
+    "dockLocation": "LLC",
+    "breakDoor": "13P",
+    "totGrossWeight": 900,
+    "onBoardPro": 5,
+    "destSIC": "XIN",
+    "proDtls": [
+      {
+        "seq": 1,
+        "proNbr": "01221223000",
+        "motorizedPiecesCnt": 2,
+        "billPiecesCnt": 2,
+        "totGrossVolume": 2.4,
+        "totGrossWeight": 300,
+        "destSIC": "XIN",
+        "loadDoor": "12L",
+        "shipperName": "TYLER UNION WATERWORKS",
+        "inspectionStatusCd": "C"
+      },
+      {
+        "seq": 2,
+        "proNbr": "01221224000",
+        "motorizedPiecesCnt": 2,
+        "billPiecesCnt": 2,
+        "totGrossVolume": 2.4,
+        "totGrossWeight": 600,
+        "destSIC": "XIN",
+        "loadDoor": "12L",
+        "shipperName": "WALMART",
+        "inspectionStatusCd": "C"
+      }
+    ]
+  }
+}

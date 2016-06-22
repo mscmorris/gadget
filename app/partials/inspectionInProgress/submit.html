@@ -1,0 +1,11 @@
+<div id="dialog-submit">
+  <div class="header">
+    <h2 class="md-title ng-binding">Submit Inspection</h2>
+    <p layout="row" layout-align="center">Are you sure you want to submit an inspection for<br/>
+      Pro#{{vm._currInspection.proNbr}}</p>
+  </div>
+  <div class="spacetop-2" layout="row" layout-align="start end">
+    <div class="dialog-btn" ng-click="vm.cancelDialog()" md-ink-ripple flex>Cancel</div>
+    <div class="dialog-btn-submit" ng-click="vm.validateInspection()" md-ink-ripple flex>Submit Inspection</div>
+  </div>
+</div>

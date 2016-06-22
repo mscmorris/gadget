@@ -1,0 +1,21 @@
+<div class="ig-header-wrapper">
+  <md-toolbar ng-class="igH.headerClassList" md-scroll-shrink>
+    <div class="md-toolbar-tools">
+      <!-- Back Button icon for navigating backwards through previous states -->
+      <md-icon md-svg-src="images/wni_control-back-2x.svg" ng-click="igH.prevState()" ng-if="!igH.isRootState"
+          class="ig-icon-button toolbar-btn nav-icon" aria-label="Back Button"></md-icon>
+      <!-- Hamburger icon for opening NavDrawer from Root States -->
+      <md-button ng-click="igH.toggleSideNav()" class="md-icon-button" ng-if="igH.isRootState">
+        <md-icon aria-label="Menu">menu</md-icon>
+      </md-button>
+      <span class="toolbar-text">{{title}}</span>
+      <span flex="{{flexVal}}"></span>
+      <div layout="row" layout-align="end center" class="toolbar-controls" ng-transclude flex></div>
+      <div class="toolbar-upo toolbar-btn" layout="column" layout-align="center" ng-click="igH.showSicChanger()">
+        <div>
+          {{igH.inspectionContext.shiftCd + "  " + igH.inspectionContext.inspectionSIC}}
+        </div>
+      </div>
+    </div>
+  </md-toolbar>
+</div>

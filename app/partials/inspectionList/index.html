@@ -1,0 +1,81 @@
+<div id="index">
+  <ig-header data-title="Inspection" flex-val="0">
+    <div layout="row" layout-align="center center" layout-padding flex="auto">
+      <md-icon md-svg-src="images/wni_control-refresh-2x.svg" class="ig-icon-button toolbar-btn" ng-click="vm.refreshInspectionShipmentsList()" aria-label="Refresh"></md-icon>
+      <p class="refresh-info">{{vm.listCount +" shipments " + vm.insRefreshTimeStmp}}</p>
+    </div>
+    <span flex></span>
+    <hr class="tbar-vertical-divider-inspect">
+    <md-menu-bar>
+      <md-menu>
+        <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="$mdOpenMenu()">
+          <md-icon md-svg-src="images/wni_control-select-2x.svg" class="ig-icon-button" aria-label="Select"></md-icon>
+          Select
+        </div>
+        <md-menu-content>
+          <md-menu-item>
+            <button ng-click="vm.selectAllShipments()">
+              Select all shipments
+            </button>
+          </md-menu-item>
+          <md-menu-item>
+            <button ng-click="vm.deSelectAllShipments()">
+              Deselect all shipments
+            </button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <hr class="tbar-vertical-divider-inspect">
+      <md-menu>
+        <div layout="row" layout-align="start center" class="toolbar-btn" ng-click="$mdOpenMenu()">
+          <md-icon md-svg-src="images/wni_control-action-2x.svg" class="ig-icon-button" aria-label="Action"></md-icon>
+          Action
+        </div>
+        <md-menu-content>
+          <md-menu-item>
+            <button ng-click="vm.setInspectionStatus('Y', 'Shipment(s) moved to Planning List.')">
+              Move selected to planning list
+            </button>
+          </md-menu-item>
+          <md-menu-item>
+            <button ng-click="vm.setInspectionStatus('X', 'Shipment(s) dismissed.')">
+              Dismiss selected shipments
+            </button>
+          </md-menu-item>
+          <md-menu-item>
+            <button ng-click="vm.setInspectionStatus('N', 'Shipment(s) marked as Inspected Not Corrected.')">
+              Mark inspected but not corrected
+            </button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </md-menu-bar>
+    <!--<hr class="tbar-vertical-divider-inspect">-->
+    <!--<md-menu>-->
+    <!--<div id="table-settings-entry" layout="row" layout-align="start center" class="toolbar-btn" ng-click="vm.openMenu($mdOpenMenu, $event)">-->
+    <!--<md-icon md-svg-src="images/wni_control-tablecontrol-2x.svg" class="ig-icon-button" aria-label="Column Settings"></md-icon>-->
+    <!--</div>-->
+    <!--<md-menu-content class="tbar-menu-content" id="tbar-menu-content">-->
+    <!--<ol class="slip-list table-settings" slip-after-swipe="vm.afterSwipe($event, $index)"-->
+    <!--slip-reorder="vm.reorder($event, $spliceIndex, $originalIndex)">-->
+    <!--<li ng-repeat="item in vm.slipListItems"  layout="column">-->
+    <!--<div ng-class="{ 'reorder-btn-top': item.reorder }" ng-click="vm.reorderUp($event, item)"  md-menu-disable-close="md-menu-disable-close"></div>-->
+    <!--<div flex layout="row" layout-align="start space-between center">-->
+    <!--<div ng-class="{ 'radio-contain-empty': !item.visible }" flex="25" class="radio-contain" ng-click="vm.toggleGridCol($event, item)"  md-menu-disable-close="md-menu-disable-close"></div>-->
+    <!--<div flex="50" layout="column" layout-align="center center">{{item.title}}</div>-->
+    <!--<div flex="25" ng-class="{ 'arrow-contain': !item.reorder }" layout-align="space-around center" ng-click="vm.toggleReorderBtns($event, item)"  md-menu-disable-close="md-menu-disable-close"></div>-->
+    <!--</div>-->
+    <!--<div ng-class="{ 'reorder-btn-bottom': item.reorder }" ng-click="vm.reorderDown($event, item)"  md-menu-disable-close="md-menu-disable-close" ></div>-->
+    <!--</li>-->
+    <!--</ol>-->
+    <!--</md-menu-content>-->
+    <!--</md-menu>-->
+  </ig-header>
+  <div ui-view="grid"></div>
+  <!--<p>-->
+  <!--<button type="button" class="btn btn-primary" ng-click="vm.changeColumns()">Change columns</button>-->
+  <!--<button type="button" class="btn btn-primary" ng-click="vm.resetColumns()">Reset columns</button>-->
+  <!--<button type="button" class="btn btn-primary" ui-sref="details">Go To Details</button>-->
+  <!--</p>-->
+</div>
+

@@ -1,0 +1,13 @@
+logs/*
+!.gitkeep
+/node_modules
+/bower_components
+tmp
+.DS_Store
+/.idea
+/dist
+/.tmp
+/.sass-cache
+/app/styles/css/app.css
+/app/config/ngConstants.js
+npm-debug.log

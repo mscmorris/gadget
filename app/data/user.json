@@ -1,0 +1,11 @@
+{
+"firstName": "Vincent",
+"lastName": "Mulka",
+"fullName": "Vincent Mulka",
+"employeeId": "H123456",
+"userId": "mulka.vincent",
+"shiftCode": "o",
+"requestingSic": "UPO",
+"groups": ["INSPECTOR","COLLECTOR"]
+}
+

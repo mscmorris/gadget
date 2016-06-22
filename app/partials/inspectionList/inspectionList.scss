@@ -1,0 +1,105 @@
+/* Inspection List datatable styles */
+table.dataTable {
+  border-collapse: collapse;
+
+  thead {
+    th {
+      padding: 1rem 1.75rem 1rem .5rem;
+      border: 1px solid $xposupp-grey2-hex;
+      text-align: left;
+      //white-space: nowrap;
+      position: relative;
+
+      .resizer {
+        $divide-color: #DD5555;
+        height: 75%;
+        display: inline-block;
+        border-left: 1px solid $divide-color;
+        position: absolute;
+        top: 15%;
+        right: 0;
+        padding-right: .4rem;
+      }
+    }
+
+    $sorting-bg-size: .75rem;
+    $sorting-bg-offset: .5rem;
+    .sorting_asc {
+      background-image: url("../images/wni_column-sort-up-1x.svg");
+      background-position: right $sorting-bg-offset center;
+      background-size: $sorting-bg-size;
+      background-repeat: no-repeat;
+
+    }
+
+    .sorting_desc {
+      background-image: url("../images/wni_column-sort-dn-1x.svg");
+      background-position: right $sorting-bg-offset center;
+      background-size: $sorting-bg-size;
+      background-repeat: no-repeat;
+
+    }
+
+    .sorting {
+      background-image: url("../images/wni_column-sort-static-1x.svg");
+      background-position: right $sorting-bg-offset center;
+      background-size: $sorting-bg-size;
+      background-repeat: no-repeat;
+
+    }
+
+  }
+
+  tr {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    td {
+      padding: 1rem .5rem;
+      text-align: left;
+      //white-space: nowrap;
+    }
+
+  }
+
+  .odd {
+    &:hover {
+      background-color: $xposupp-grey3-hex !important;
+    }
+    &.row-selected {
+      background-color: $xposupp-grey1-hex;
+      color: $body-text-light;
+      &:hover {
+        color: $xpo-black-hex;
+      }
+    }
+  }
+
+  .even {
+    background-color: $content-bg-color;
+    &:hover {
+      background-color: $xposupp-grey3-hex !important;
+    }
+    &.row-selected {
+      background-color: $xpo-black-hex;
+      color: $body-text-light;
+      &:hover {
+        color: $xpo-black-hex;
+      }
+    }
+  }
+}
+/* End datatable styles */
+
+@media screen and (max-width: 1280px) {
+  .refresh-info {
+    font-size: .8rem;
+  }
+}
+
+//we don't want to show the default colvis drop-down
+div .ColVis {
+  display: none;
+}

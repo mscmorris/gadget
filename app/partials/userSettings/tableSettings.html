@@ -1,0 +1,30 @@
+<div id="table-settings-index">
+  <ig-header data-title="Column Settings"></ig-header>
+  <div class="settings-content">
+    <p class="text-offset">All changes will be automatically saved.</p>
+    <div layout="column" class="t-settings-inspection" flex="65">
+      <h3>Inspection List</h3>
+      <ol class="slip-list table-settings" slip-after-swipe="vm.afterSwipe($event, $index)"
+          slip-reorder="vm.reorder($event, $spliceIndex, $originalIndex)">
+        <li ng-repeat="item in vm._columnList" layout="column">
+          <div flex layout="row" layout-align="space-between center">
+            <div class="radio-contain" ng-click="vm.toggleGridCol($event, item)">
+              <md-icon md-svg-src="images/wni_radio-full-1x.svg" ng-show="item.visible"
+                       class="ig-icon-button scrubber" aria-label="Column Visible"></md-icon>
+              <md-icon md-svg-src="images/wni_radio-empty-1x.svg" ng-show="!item.visible"
+                       class="ig-icon-button scrubber" aria-label="Column Hidden"></md-icon>
+            </div>
+            <div>{{item.title}}</div>
+            <div>
+              <md-icon md-svg-src="images/wni_control-hamburger-2x.svg" class="scrubber" aria-label="Drag Column"></md-icon>
+            </div>
+          </div>
+        </li>
+      </ol>
+      <button class="action-btn spacetop-2" ng-click="vm.restorePreference(vm.CODE_CONSTANTS.PREFERENCES.LIST_I)">
+        Restore Default Settings
+      </button>
+    </div>
+  </div>
+</div>
+
